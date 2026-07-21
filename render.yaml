@@ -1,27 +1,36 @@
-# Render Blueprint for the Chun Wah Next.js app (SSR + API routes + MongoDB).
-# Deploy: Render Dashboard → New → Blueprint → connect this repo.
-# Secrets are marked `sync: false` — set their values in the Render dashboard,
-# they are never stored in this file / the repo.
+# Render Blueprint pour Chun Wah — l'API Express UNIQUEMENT.
+#
+# Architecture (split, comme para d'or) :
+#   • Frontend → Next.js export statique (codebase/), buildé dans `out/`, hébergé sur Hostinger.
+#   • Backend  → cette API Express (codebase/server/), hébergée ici sur Render.
+#   • Données  → MongoDB Atlas + Cloudinary (externes).
+#
+# Déploiement : dashboard.render.com → New → Blueprint → connecter ce repo → Apply.
+# Les secrets sont marqués `sync: false` — régler leurs vraies valeurs dans le dashboard Render.
 services:
   - type: web
-    name: chun-wah
+    name: chunwah-api
     runtime: node
-    plan: free # free spins down when idle (slow cold starts); use `starter` for production
-    region: frankfurt # closest Render region to Morocco
+    rootDir: codebase/server
+    # $7/mo, toujours éveillé (pas de cold start sur le login/admin). Passer à
+    # `free` pour tester gratuitement, mais free s'endort après 15 min → ~50s de réveil.
+    plan: starter
+    region: frankfurt # le plus proche du Maroc ; options : oregon, ohio, virginia, singapore
     branch: main
-    buildCommand: npm ci && npm run build
-    startCommand: npm start # `next start` binds to Render's $PORT automatically
-    healthCheckPath: /fr
-    autoDeploy: true
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /
+    autoDeploy: true # redéploie à chaque push sur la branche connectée
     envVars:
       - key: NODE_VERSION
         value: "20"
-      - key: NODE_ENV
-        value: production
-      # --- Set these values in the Render dashboard (do not commit them) ---
+      # Origines autorisées à appeler l'API (le site sur Hostinger + le dev local).
+      - key: CORS_ORIGIN
+        value: https://chunwah.ma,https://www.chunwah.ma,http://localhost:3000
+      # --- Régler ces vraies valeurs dans le dashboard Render (ne pas commit) ---
       - key: MONGODB_URI
         sync: false
-      - key: AUTH_SECRET
+      - key: JWT_SECRET
         sync: false
       - key: CLOUDINARY_CLOUD_NAME
         sync: false

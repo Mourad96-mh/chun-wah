@@ -1,0 +1,31 @@
+# Render Blueprint for the Chun Wah Next.js app (SSR + API routes + MongoDB).
+# Deploy: Render Dashboard → New → Blueprint → connect this repo.
+# Secrets are marked `sync: false` — set their values in the Render dashboard,
+# they are never stored in this file / the repo.
+services:
+  - type: web
+    name: chun-wah
+    runtime: node
+    plan: free # free spins down when idle (slow cold starts); use `starter` for production
+    region: frankfurt # closest Render region to Morocco
+    branch: main
+    buildCommand: npm ci && npm run build
+    startCommand: npm start # `next start` binds to Render's $PORT automatically
+    healthCheckPath: /fr
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NODE_ENV
+        value: production
+      # --- Set these values in the Render dashboard (do not commit them) ---
+      - key: MONGODB_URI
+        sync: false
+      - key: AUTH_SECRET
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false

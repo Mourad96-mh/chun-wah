@@ -10,13 +10,13 @@ export const site = {
   name: 'Chun Wah',
   legalName: 'Académie Chun Wah',
 
-  // TODO: buy / confirm the domain. Used for canonicals, sitemap, OG tags.
-  url: 'https://www.chunwah.ma',
+  // Live domain. Used for canonicals, sitemap, OG tags, JSON-LD.
+  url: 'https://cwtcma-morocco.com',
 
   // TODO: real contact details.
-  phone: '+212 6 00 00 00 00',
-  phoneHref: '+212600000000',
-  whatsapp: '212600000000',
+  phone: '+212 7 11 48 73 69',
+  phoneHref: '+212711487369',
+  whatsapp: '212711487369',
   email: 'contact@chunwah.ma',
 
   address: {

@@ -1,0 +1,39 @@
+{
+  "name": "chun-wah",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "seed:admin": "node scripts/seed-admin.mjs",
+    "shoot": "node shoot.mjs",
+    "pdf": "node make-pdf.mjs client-screenshots Chun-Wah-maquette-desktop.pdf && node make-pdf.mjs client-screenshots-mobile Chun-Wah-maquette-mobile.pdf",
+    "shoot:whatsapp": "node make-whatsapp.mjs client-screenshots whatsapp/desktop && node make-whatsapp.mjs client-screenshots-mobile whatsapp/mobile"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.10.0",
+    "jose": "^6.2.3",
+    "marked": "^18.0.6",
+    "mongoose": "^9.7.4",
+    "next": "15.1.6",
+    "next-intl": "^3.26.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sanitize-html": "^2.17.6",
+    "slugify": "^1.6.9"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/sanitize-html": "^2.16.1",
+    "pdf-lib": "^1.17.1",
+    "puppeteer-core": "^25.3.0",
+    "sharp": "^0.35.3",
+    "typescript": "^5"
+  }
+}

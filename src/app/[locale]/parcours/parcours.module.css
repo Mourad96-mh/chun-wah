@@ -1,0 +1,226 @@
+/* --- Section head --------------------------------------------------------- */
+
+.showcase {
+  /* Faint "map paper" backdrop so the journey reads as a plotted route. */
+  background:
+    radial-gradient(circle at 1px 1px, rgba(14, 15, 17, 0.05) 1px, transparent 0) 0 0 / 26px 26px,
+    var(--paper);
+}
+
+.head {
+  max-width: 46rem;
+  margin: 0 auto 2.75rem;
+  text-align: center;
+}
+
+/* --- Journey strip -------------------------------------------------------- */
+/* A dashed route with numbered milestone nodes. Horizontal on desktop, it
+   folds to a vertical timeline on narrow screens. */
+
+.journey {
+  list-style: none;
+  margin: 0 auto 3rem;
+  padding: 0;
+  max-width: 56rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+}
+
+/* The connecting route line, drawn behind the nodes. */
+.journey::before {
+  content: '';
+  position: absolute;
+  top: 22px;
+  left: 8%;
+  right: 8%;
+  height: 0;
+  border-top: 3px dashed var(--accent);
+  opacity: 0.45;
+  z-index: 0;
+}
+
+.milestone {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1;
+  text-align: center;
+}
+
+.node {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--paper-2);
+  border: 3px solid var(--accent);
+  color: var(--accent-dark);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+/* First and last nodes are the emphasised start / finish of the path. */
+.milestone:first-child .node,
+.milestone:last-child .node {
+  background: var(--accent);
+  color: #fff;
+}
+
+.nodeLabel {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  max-width: 9rem;
+}
+
+/* --- The map (uploaded image or embedded PDF) ----------------------------- */
+
+.mapFrame {
+  margin: 0 auto;
+  max-width: 62rem;
+  text-align: center;
+}
+
+.mapInner {
+  position: relative;
+  background: var(--paper-2);
+  border: 1px solid #e7e3dc;
+  border-radius: var(--radius-lg);
+  padding: 0.9rem;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+/* A subtle "pin" so the map reads as posted on a board. */
+.mapInner::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 2px 4px rgba(14, 15, 17, 0.35);
+  z-index: 2;
+}
+
+.mapImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+.mapPdf {
+  display: block;
+  width: 100%;
+  height: min(80vh, 900px);
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+.caption {
+  margin: 1.1rem auto 0;
+  max-width: 44rem;
+  color: #565b64;
+  font-size: 0.97rem;
+  line-height: 1.6;
+}
+
+.actions {
+  margin-top: 1.4rem;
+}
+
+.download {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #fff;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.65rem 1.25rem;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.download:hover {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+}
+
+/* --- CTA ------------------------------------------------------------------ */
+
+.cta {
+  background: var(--accent);
+  color: #fff;
+  text-align: center;
+}
+
+.ctaInner {
+  padding-block: 4rem;
+}
+
+.cta h2 {
+  margin-bottom: 1.5rem;
+  color: #fff;
+}
+
+.ctaButton {
+  background: #fff;
+  border-color: #fff;
+  color: var(--accent-dark);
+}
+
+.ctaButton:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+/* --- Responsive: fold the journey strip to a vertical timeline ------------ */
+
+@media (max-width: 640px) {
+  .journey {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    max-width: 20rem;
+    margin-inline: auto;
+  }
+
+  .journey::before {
+    top: 8%;
+    bottom: 8%;
+    left: 22px;
+    right: auto;
+    height: auto;
+    width: 0;
+    border-top: 0;
+    border-left: 3px dashed var(--accent);
+  }
+
+  .milestone {
+    flex-direction: row;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .mapPdf {
+    height: 70vh;
+  }
+}

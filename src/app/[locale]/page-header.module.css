@@ -1,0 +1,40 @@
+/* Shared banner at the top of every inner page. */
+
+.header {
+  background: var(--ink);
+  color: var(--paper);
+  padding-block: 4rem 3.5rem;
+}
+
+.inner {
+  max-width: 52rem;
+}
+
+.title {
+  margin-bottom: 1rem;
+}
+
+.intro {
+  margin: 0;
+  font-size: clamp(1.02rem, 1.6vw, 1.18rem);
+  color: var(--muted-light);
+  max-width: 62ch;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.85rem;
+  color: var(--muted-light);
+}
+
+.breadcrumb a:hover {
+  color: var(--paper);
+  text-decoration: underline;
+}
+
+.breadcrumb span[aria-current] {
+  color: var(--brass);
+}

@@ -1,0 +1,96 @@
+.form {
+  display: grid;
+  gap: 1.15rem;
+  padding: 1.75rem;
+  background: var(--paper-2);
+  border: 1px solid rgba(14, 15, 17, 0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.row {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  /* Allow the field to shrink below its input's intrinsic width inside the
+     two-column .row grid — otherwise the form overflows on mid-size screens. */
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.input,
+.select,
+.textarea {
+  /* width:100% + min-width:0 so form controls fill their field and shrink with
+     it (browsers give inputs an intrinsic min-width from the `size` attr, which
+     otherwise causes horizontal overflow in the two-column .row grid). */
+  width: 100%;
+  min-width: 0;
+  padding: 0.8rem 0.9rem;
+  background: #fbfaf8;
+  border: 1px solid rgba(14, 15, 17, 0.18);
+  border-radius: var(--radius);
+  font-size: 0.98rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  outline: none;
+}
+
+.textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.inputError {
+  border-color: var(--accent);
+}
+
+.error {
+  font-size: 0.82rem;
+  color: var(--accent-dark);
+}
+
+.note {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.emailFallback {
+  justify-self: center;
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-decoration: underline;
+}
+
+.emailFallback:hover {
+  color: var(--accent);
+}
+
+@media (min-width: 620px) {
+  .row {
+    grid-template-columns: 1fr 1fr;
+  }
+}

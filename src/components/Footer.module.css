@@ -1,0 +1,114 @@
+.footer {
+  background: var(--ink);
+  color: var(--muted-light);
+  padding-block: 4rem 2rem;
+}
+
+.grid {
+  display: grid;
+  gap: 2.5rem;
+  grid-template-columns: 1fr;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  max-width: 34ch;
+}
+
+.logo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+
+.logoMark {
+  color: var(--accent);
+}
+
+.tagline {
+  font-size: 0.95rem;
+  margin-bottom: 1.25rem;
+}
+
+.social {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: background var(--transition), border-color var(--transition),
+    color var(--transition);
+}
+
+.socialLink:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.colTitle {
+  margin-bottom: 1rem;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  font-size: 0.95rem;
+}
+
+.list a:hover {
+  color: var(--paper);
+}
+
+.address {
+  font-style: normal;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.address a:hover {
+  color: var(--paper);
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.75rem;
+  font-size: 0.85rem;
+}
+
+.bottom a:hover {
+  color: var(--paper);
+}
+
+@media (min-width: 720px) {
+  .grid {
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    gap: 2rem;
+  }
+}

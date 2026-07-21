@@ -1,0 +1,93 @@
+.group + .group {
+  margin-top: 3.5rem;
+}
+
+.groupTitle {
+  margin-bottom: 1.75rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 2px solid var(--accent);
+  font-size: 1rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.list {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+.book {
+  display: grid;
+  /* Small screens: cover on top, text below (single column). It switches to
+     cover-left / text-right at 560px and up (see the media query below). */
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background: var(--paper-2);
+  border: 1px solid rgba(14, 15, 17, 0.08);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.cover {
+  width: 92px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: var(--ink-3);
+}
+
+.coverEmpty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius);
+  background: var(--ink-3);
+  color: var(--muted-light);
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+}
+
+.title {
+  margin-bottom: 0.15rem;
+  font-size: 1.15rem;
+}
+
+.author {
+  display: block;
+  margin-bottom: 0.85rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.recommendation {
+  margin: 0 0 0.9rem;
+  font-size: 0.97rem;
+  color: var(--ink);
+}
+
+.level {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background: var(--accent-soft);
+  border-radius: 999px;
+  font-size: 0.76rem;
+  color: var(--accent-dark);
+}
+
+/* From 560px up, place the cover beside the text again. */
+@media (min-width: 560px) {
+  .book {
+    grid-template-columns: 92px 1fr;
+    align-items: start;
+  }
+}
+
+@media (min-width: 800px) {
+  .list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

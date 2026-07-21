@@ -1,0 +1,48 @@
+.list {
+  border-top: 1px solid rgba(14, 15, 17, 0.12);
+}
+
+.item {
+  border-bottom: 1px solid rgba(14, 15, 17, 0.12);
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Hide the native disclosure triangle. */
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary::after {
+  content: '+';
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--accent);
+  transition: transform var(--transition);
+}
+
+.item[open] .summary::after {
+  transform: rotate(45deg);
+}
+
+.answer {
+  padding-bottom: 1.35rem;
+  max-width: 68ch;
+  color: var(--muted);
+}
+
+.answer p {
+  margin: 0;
+}

@@ -1,0 +1,81 @@
+.list {
+  display: grid;
+  gap: 3rem;
+}
+
+.card {
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+}
+
+.media {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.name {
+  margin-bottom: 0.35rem;
+}
+
+.role {
+  display: block;
+  margin-bottom: 1.25rem;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.bio {
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+.credTitle {
+  margin: 1.75rem 0 0.85rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.creds {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.cred {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.cred::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+@media (min-width: 760px) {
+  .card {
+    grid-template-columns: 300px 1fr;
+    gap: 2.5rem;
+  }
+
+  /* Photo always occupies the fixed 300px track, text the flexible one, so the
+     image stays the same size on every row. For even rows we mirror the layout:
+     swap the track widths AND move the photo into the (now right-hand) 300px
+     track — `order` alone would leave the photo in the wide 1fr track. */
+  .card:nth-child(even) {
+    grid-template-columns: 1fr 300px;
+  }
+
+  .card:nth-child(even) .media {
+    grid-column: 2;
+  }
+}

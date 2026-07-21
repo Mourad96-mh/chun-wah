@@ -1,0 +1,91 @@
+.layout {
+  display: grid;
+  gap: 3rem;
+  align-items: start;
+}
+
+.block + .block {
+  margin-top: 2.25rem;
+}
+
+.blockTitle {
+  margin-bottom: 0.75rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.address {
+  font-style: normal;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.contactLine {
+  display: block;
+  font-size: 1.05rem;
+  line-height: 1.9;
+}
+
+.contactLine a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.hours {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.98rem;
+}
+
+.hoursRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  max-width: 22rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(14, 15, 17, 0.1);
+}
+
+.hoursDays {
+  color: var(--muted);
+}
+
+.hoursTime {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2.25rem;
+}
+
+.mapWrap {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(14, 15, 17, 0.12);
+}
+
+.map {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 0;
+}
+
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+@media (min-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+}

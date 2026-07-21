@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="'Arial Narrow', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <pattern id="d" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1.5" fill="#ffffff" opacity="0.05"/>
+    </pattern>
+    <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0.45" stop-color="#141518"/>
+      <stop offset="1" stop-color="#141518" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="720" fill="#141518"/>
+  <rect width="1280" height="720" fill="url(#d)"/>
+
+  <!-- Large faded kung-fu character bleeding off the right edge -->
+  <text x="1180" y="600" font-size="620" font-weight="700" fill="#c2352b" opacity="0.22" text-anchor="end">童</text>
+  <rect width="1280" height="720" fill="url(#fade)"/>
+
+  <!-- Kicker + accent rule -->
+  <text x="80" y="250" font-size="26" font-weight="700" fill="#e0554b" letter-spacing="4">KUNG-FU · ENFANTS</text>
+  <rect x="80" y="270" width="72" height="4" fill="#c2352b"/>
+
+  <!-- Title -->
+  <text x="80" y="380" font-size="62" font-weight="700" fill="#ffffff">Initier son enfant</text>
+    <text x="80" y="454" font-size="62" font-weight="700" fill="#ffffff">au kung-fu</text>
+
+  <!-- Brand footer -->
+  <text x="80" y="650" font-size="22" font-weight="700" fill="#8a8f98" letter-spacing="3">詠 &#160;ACADÉMIE CHUN WAH · RABAT</text>
+</svg>

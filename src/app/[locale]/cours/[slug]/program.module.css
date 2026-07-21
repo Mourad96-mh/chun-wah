@@ -1,0 +1,139 @@
+.layout {
+  display: grid;
+  gap: 3rem;
+  align-items: start;
+}
+
+.media {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.intro {
+  font-size: 1.08rem;
+  color: var(--muted);
+}
+
+.metaList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px;
+  margin: 2rem 0;
+  background: rgba(14, 15, 17, 0.12);
+  border: 1px solid rgba(14, 15, 17, 0.12);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.metaItem {
+  padding: 1.1rem 1rem;
+  background: var(--paper);
+}
+
+.metaLabel {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.metaValue {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+}
+
+.benefits {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0 0 2.5rem;
+}
+
+.benefit {
+  position: relative;
+  padding-left: 1.9rem;
+}
+
+.benefit::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  transform: rotate(45deg);
+}
+
+.blockTitle {
+  margin-bottom: 1.25rem;
+  font-size: 1.15rem;
+}
+
+.aside {
+  position: sticky;
+  top: 96px;
+  padding: 1.75rem;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius-lg);
+}
+
+.asideTitle {
+  margin-bottom: 1.1rem;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
+.asideSlots {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-bottom: 1.75rem;
+  font-size: 0.92rem;
+}
+
+.asideSlot {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.asideDay {
+  color: var(--muted-light);
+}
+
+.asideTime {
+  font-family: var(--font-display);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.asideEmpty {
+  margin-bottom: 1.5rem;
+  font-size: 0.92rem;
+  color: var(--muted-light);
+}
+
+.instructorList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+  font-size: 0.9rem;
+  color: var(--muted-light);
+}
+
+@media (min-width: 900px) {
+  .layout {
+    grid-template-columns: 1.6fr 1fr;
+    gap: 4rem;
+  }
+}

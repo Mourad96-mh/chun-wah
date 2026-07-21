@@ -1,0 +1,220 @@
+/* --- Hero ----------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: clamp(520px, 78vh, 760px);
+  background: var(--ink);
+  color: var(--paper);
+  overflow: hidden;
+}
+
+.heroMedia {
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(14, 15, 17, 0.95) 0%,
+    rgba(14, 15, 17, 0.8) 45%,
+    rgba(14, 15, 17, 0.45) 100%
+  );
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  padding-block: 4rem;
+}
+
+.heroContent {
+  max-width: 42rem;
+}
+
+.heroTitle {
+  margin-bottom: 1.25rem;
+}
+
+.heroTitle span {
+  color: var(--accent);
+}
+
+.heroSubtitle {
+  margin-bottom: 2rem;
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  color: var(--muted-light);
+  max-width: 46ch;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+/* --- Stats bar ------------------------------------------------------------ */
+
+.stats {
+  background: var(--ink-2);
+  color: var(--paper);
+  border-top: 1px solid var(--line);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--line);
+}
+
+.stat {
+  padding: 1.75rem 1.25rem;
+  background: var(--ink-2);
+  text-align: center;
+}
+
+.statValue {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--brass);
+}
+
+.statLabel {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  color: var(--muted-light);
+}
+
+/* --- About ---------------------------------------------------------------- */
+
+.about {
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+}
+
+.aboutMedia {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.aboutBody p {
+  font-size: 1.05rem;
+  color: var(--muted);
+  max-width: 56ch;
+}
+
+/* --- Section headers ------------------------------------------------------ */
+
+.sectionHead {
+  max-width: 46rem;
+  margin-bottom: 3rem;
+}
+
+.sectionHeadCentered {
+  margin-inline: auto;
+  text-align: center;
+}
+
+/* --- Card grid ------------------------------------------------------------ */
+
+.cardGrid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* --- Why grid ------------------------------------------------------------- */
+
+.whyGrid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+}
+
+.whyItem {
+  padding-top: 1.5rem;
+  border-top: 3px solid var(--accent);
+}
+
+.whyItem h3 {
+  margin-bottom: 0.6rem;
+}
+
+.whyItem p {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* --- Schedule preview ----------------------------------------------------- */
+
+.scheduleFoot {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+/* --- Final CTA ------------------------------------------------------------ */
+
+.cta {
+  position: relative;
+  background: var(--accent);
+  color: #fff;
+  text-align: center;
+}
+
+.ctaInner {
+  padding-block: 4.5rem;
+}
+
+.cta h2 {
+  margin-bottom: 0.85rem;
+}
+
+.ctaBody {
+  max-width: 48ch;
+  margin: 0 auto 2rem;
+  font-size: 1.08rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.ctaButton {
+  background: #fff;
+  border-color: #fff;
+  color: var(--accent-dark);
+}
+
+.ctaButton:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+.centerLink {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+@media (min-width: 860px) {
+  .statsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .about {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+  .whyGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

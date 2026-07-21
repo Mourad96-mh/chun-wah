@@ -97,6 +97,16 @@ export const adminApi = {
   deleteArticle: (id: string) =>
     request(`/api/articles/${id}`, { method: 'DELETE', auth: true }),
 
+  // --- Livres ----------------------------------------------------------------
+  listBooks: () => request('/api/books/admin/all', { auth: true }),
+  getBook: (id: string) => request(`/api/books/admin/${id}`, { auth: true }),
+  createBook: (b: unknown) =>
+    request('/api/books', { method: 'POST', body: b, auth: true }),
+  updateBook: (id: string, b: unknown) =>
+    request(`/api/books/${id}`, { method: 'PUT', body: b, auth: true }),
+  deleteBook: (id: string) =>
+    request(`/api/books/${id}`, { method: 'DELETE', auth: true }),
+
   // --- Uploads (Cloudinary) --------------------------------------------------
   async upload(file: File, folder?: string) {
     const fd = new FormData();

@@ -11,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const articlesFile = path.resolve(__dirname, '../src/lib/articles.data.json');
+const booksFile = path.resolve(__dirname, '../src/lib/books.data.json');
 
 // Charge .env.local (ce script tourne hors de Next, qui sinon lirait le fichier).
 function loadEnvLocal() {
@@ -47,7 +48,8 @@ async function main() {
     return;
   }
   await syncCollection('/api/articles', articlesFile, 'articles');
-  // TODO (migration) : ajouter livres, cours, parcours, vidéos, réglages…
+  await syncCollection('/api/books', booksFile, 'livres');
+  // TODO (migration) : ajouter cours, parcours, vidéos, réglages…
 }
 
 main();

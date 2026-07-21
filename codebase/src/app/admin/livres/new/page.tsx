@@ -1,16 +1,11 @@
-import { redirect } from 'next/navigation';
-import { getSession } from '@/lib/auth';
+'use client';
+
 import AdminShell from '@/components/admin/AdminShell';
 import BookEditor from '@/components/admin/BookEditor';
 
-export const dynamic = 'force-dynamic';
-
-export default async function NewBookPage() {
-  const session = await getSession();
-  if (!session) redirect('/admin/login');
-
+export default function NewBookPage() {
   return (
-    <AdminShell userName={session.name || session.email}>
+    <AdminShell>
       <BookEditor />
     </AdminShell>
   );

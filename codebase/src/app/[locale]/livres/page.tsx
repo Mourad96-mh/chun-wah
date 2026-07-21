@@ -1,16 +1,16 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { redirect } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import { site } from '@/data/site';
-import { dbConnect } from '@/lib/db';
-import { Book } from '@/models/Book';
 import { buildMetadata } from '@/lib/seo';
-import { assertNavVisible } from '@/lib/settings';
+import { books, type Book } from '@/lib/books';
 import PageHeader from '@/components/PageHeader';
 import styles from './books.module.css';
 
-export const revalidate = 300;
+// Livres en français uniquement : on ne génère que /fr/livres.
+export function generateStaticParams() {
+  return [{ locale: 'fr' }];
+}
 
 export async function generateMetadata({
   params,
@@ -28,37 +28,20 @@ export async function generateMetadata({
   });
 }
 
-async function fetchBooks() {
-  await dbConnect();
-  return Book.find({ status: 'published' }).sort({ order: 1, createdAt: -1 }).lean();
-}
-
 export default async function BooksPage({
   params,
 }: {
   params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
-
-  if (locale !== 'fr') redirect({ href: '/livres', locale: 'fr' });
-
   setRequestLocale(locale);
-  await assertNavVisible('books');
 
   const t = await getTranslations('books');
   const tn = await getTranslations('nav');
 
-  // See the note in blog/page.tsx: degrade to the empty state rather than
-  // failing the build or the whole site when the database is unreachable.
-  let books: Awaited<ReturnType<typeof fetchBooks>> = [];
-  try {
-    books = await fetchBooks();
-  } catch (err) {
-    console.error('[livres] books unavailable:', err);
-  }
-
-  // Group by category, preserving the order books came back in.
-  const groups = new Map<string, typeof books>();
+  // Livres publiés depuis le snapshot baké au build (src/lib/books.data.json).
+  // Regroupés par catégorie, dans l'ordre où ils arrivent (déjà trié par `order`).
+  const groups = new Map<string, Book[]>();
   for (const book of books) {
     const key = book.category?.trim() || t('uncategorized');
     if (!groups.has(key)) groups.set(key, []);
@@ -83,7 +66,7 @@ export default async function BooksPage({
                 <h2 className={styles.groupTitle}>{category}</h2>
                 <div className={styles.list}>
                   {groupBooks.map((book) => (
-                    <article key={String(book._id)} className={styles.book}>
+                    <article key={book.id} className={styles.book}>
                       {book.coverImage ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img

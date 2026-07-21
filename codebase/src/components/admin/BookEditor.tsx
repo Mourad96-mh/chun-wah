@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { adminApi } from '@/lib/adminApi';
 import ImageField from './ImageField';
 
 export interface BookFormValues {
-  _id?: string;
+  id?: string;
   title: string;
   author: string;
   recommendation: string;
@@ -30,7 +31,7 @@ const EMPTY: BookFormValues = {
 
 export default function BookEditor({ initial }: { initial?: BookFormValues }) {
   const router = useRouter();
-  const isNew = !initial?._id;
+  const isNew = !initial?.id;
 
   const [values, setValues] = useState<BookFormValues>(initial ?? EMPTY);
   const [error, setError] = useState('');
@@ -49,34 +50,22 @@ export default function BookEditor({ initial }: { initial?: BookFormValues }) {
     const payload = { ...values, status: status ?? values.status };
 
     try {
-      const res = await fetch(
-        isNew ? '/api/admin/books' : `/api/admin/books/${initial!._id}`,
-        {
-          method: isNew ? 'POST' : 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        },
-      );
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error ?? 'Enregistrement impossible.');
-        return;
-      }
+      // L'API (Express) renvoie directement le livre : { id, status, … }.
+      const book = isNew
+        ? await adminApi.createBook(payload)
+        : await adminApi.updateBook(initial!.id!, payload);
 
       if (isNew) {
-        router.push(`/admin/livres/${data.book._id}`);
-        router.refresh();
+        router.push(`/admin/livres/edit?id=${book.id}`);
         return;
       }
 
-      setValues((v) => ({ ...v, status: data.book.status }));
+      setValues((v) => ({ ...v, status: book.status }));
       setNotice(
-        data.book.status === 'published' ? 'Livre enregistré et publié.' : 'Brouillon enregistré.',
+        book.status === 'published' ? 'Livre enregistré et publié.' : 'Brouillon enregistré.',
       );
-      router.refresh();
-    } catch {
-      setError('Erreur réseau. Réessayez.');
+    } catch (err) {
+      setError((err as Error).message || 'Enregistrement impossible.');
     } finally {
       setBusy(false);
     }
@@ -87,14 +76,10 @@ export default function BookEditor({ initial }: { initial?: BookFormValues }) {
 
     setBusy(true);
     try {
-      const res = await fetch(`/api/admin/books/${initial!._id}`, { method: 'DELETE' });
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error ?? 'Suppression impossible.');
-        return;
-      }
+      await adminApi.deleteBook(initial!.id!);
       router.push('/admin/livres');
-      router.refresh();
+    } catch (err) {
+      setError((err as Error).message || 'Suppression impossible.');
     } finally {
       setBusy(false);
     }
@@ -177,6 +162,7 @@ export default function BookEditor({ initial }: { initial?: BookFormValues }) {
           value={values.coverImage}
           onChange={(url) => set('coverImage', url)}
           label="Couverture du livre"
+          folder="chunwah/livres"
         />
 
         <div className="a-grid2">

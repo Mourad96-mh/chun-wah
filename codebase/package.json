@@ -6,6 +6,7 @@
     "dev": "next dev",
     "prebuild": "node scripts/sync-content.mjs",
     "build": "next build",
+    "postbuild": "node scripts/copy-dist.mjs",
     "start": "next start",
     "lint": "next lint",
     "icons": "node scripts/make-icons.mjs",

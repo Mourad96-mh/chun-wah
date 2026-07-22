@@ -57,11 +57,11 @@ Builder en local (ou en CI), puis téléverser le dossier `out/`.
    (hPanel → File Manager, ou FTP). C'est tout le site.
 4. Activer le SSL pour cwtcma-morocco.com dans hPanel (Let's Encrypt gratuit).
 5. **Redirection racine** : le site vit sous `/fr/` et `/en/` (pas de middleware en
-   statique). Ajouter dans `public_html/.htaccess` une redirection de `/` vers `/fr/` :
-   ```apache
-   RewriteEngine On
-   RewriteRule ^$ /fr/ [R=302,L]
-   ```
+   statique). C'est `public/index.html` — exporté en `out/index.html` — qui s'en
+   charge : Apache le sert pour `/`, il redirige vers `/fr/` (ou `/en/` selon la
+   langue du navigateur). Aucune règle `.htaccess` n'est nécessaire. En dev en
+   revanche `/` reste un 404 (le routeur Next a la priorité sur `public/`) :
+   ouvrir directement <http://localhost:3000/fr/>.
 
 Les URLs propres marchent nativement : `trailingSlash: true` émet `route/index.html`,
 qu'Apache/LiteSpeed sert pour `/route/`.

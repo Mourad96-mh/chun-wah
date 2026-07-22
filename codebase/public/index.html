@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Chun Wah</title>
+    <meta name="robots" content="noindex" />
+    <!-- Le site vit sous /fr/ et /en/ : la racine ne fait que rediriger.
+         En export statique il n'y a ni middleware ni redirection serveur, donc
+         cette page tient le rôle (et évite de dépendre d'une règle .htaccess).
+         Le meta refresh suffit sans JavaScript ; le script affine juste le
+         choix de la langue. -->
+    <meta http-equiv="refresh" content="0; url=/fr/" />
+    <link rel="canonical" href="/fr/" />
+  </head>
+  <body>
+    <p>Redirection vers <a href="/fr/">chunwah.ma/fr</a>…</p>
+    <script>
+      // Anglophones → /en/, tout le reste → /fr/ (défaut du meta refresh).
+      var lang = (navigator.language || 'fr').toLowerCase();
+      if (lang.indexOf('en') === 0) location.replace('/en/');
+      else location.replace('/fr/');
+    </script>
+  </body>
+</html>

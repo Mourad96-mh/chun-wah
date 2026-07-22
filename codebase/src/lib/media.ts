@@ -62,7 +62,11 @@ type RawItem = { slot?: string; url?: string; alt?: string; name?: string };
  * retombe sur son placeholder).
  */
 export async function getMediaMap(): Promise<MediaMap> {
-  const items = ((rawMedia as { items?: RawItem[] }).items ?? []);
+  return toMediaMap((rawMedia as { items?: RawItem[] }).items ?? []);
+}
+
+/** Construit la carte depuis un tableau brut (snapshot ou réponse API). */
+export function toMediaMap(items: RawItem[]): MediaMap {
   const map: MediaMap = {};
   for (const item of items) {
     const slot = String(item.slot ?? '');
@@ -71,4 +75,30 @@ export async function getMediaMap(): Promise<MediaMap> {
     }
   }
   return map;
+}
+
+/**
+ * Carte des images lue EN DIRECT depuis l'API (côté client) : une photo
+ * remplacée dans /admin/medias apparaît sans redéployer le site statique.
+ */
+// Plusieurs composants (hero, « à propos », roster) demandent la même carte au
+// même moment : on mémoïse la promesse pour ne faire qu'un appel par page.
+let mediaMapPromise: Promise<MediaMap> | null = null;
+
+export async function fetchMediaMap(): Promise<MediaMap> {
+  if (!mediaMapPromise) {
+    const api = process.env.NEXT_PUBLIC_API_URL || '';
+    mediaMapPromise = fetch(`${api}/api/media`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`GET /api/media → ${res.status}`);
+        return res.json() as Promise<{ items?: RawItem[] }>;
+      })
+      .then((data) => toMediaMap(data.items ?? []))
+      .catch((err) => {
+        // Un échec ne doit pas figer le cache : la navigation suivante réessaie.
+        mediaMapPromise = null;
+        throw err;
+      });
+  }
+  return mediaMapPromise;
 }

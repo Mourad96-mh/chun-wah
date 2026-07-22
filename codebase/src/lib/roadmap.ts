@@ -36,6 +36,17 @@ export function normalizeRoadmap(raw: unknown): Roadmap {
 /** Le parcours publié, lu par la page /parcours (/roadmap en anglais). */
 export const roadmap: Roadmap = normalizeRoadmap(rawRoadmap);
 
+/**
+ * Parcours lu EN DIRECT depuis l'API (côté client) : un schéma remplacé dans
+ * /admin/parcours apparaît sans redéployer le site statique.
+ */
+export async function fetchRoadmap(): Promise<Roadmap> {
+  const api = process.env.NEXT_PUBLIC_API_URL || '';
+  const res = await fetch(`${api}/api/roadmap`);
+  if (!res.ok) throw new Error(`GET /api/roadmap → ${res.status}`);
+  return normalizeRoadmap(await res.json());
+}
+
 /** Vrai quand il y a réellement quelque chose à afficher. */
 export function hasRoadmapContent(r: Roadmap = roadmap): boolean {
   return Boolean(r.imageUrl || r.fileUrl);

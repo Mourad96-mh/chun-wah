@@ -10,8 +10,8 @@ import { buildMetadata } from '@/lib/seo';
 import { getPublicSettings } from '@/lib/settings';
 import { getMediaMap } from '@/lib/media';
 import { faqSchema } from '@/lib/schema';
-import Photo from '@/components/Photo';
-import ProgramCard from '@/components/ProgramCard';
+import LivePhoto from '@/components/LivePhoto';
+import ProgramsList from '@/components/ProgramsList';
 import ScheduleTable from '@/components/ScheduleTable';
 import Testimonials from '@/components/Testimonials';
 import Faq from '@/components/Faq';
@@ -72,14 +72,14 @@ export default async function HomePage({
       {/* --- Hero --- */}
       <section className={styles.hero}>
         <div className={styles.heroMedia}>
-          <Photo
+          <LivePhoto
+            slot="hero"
+            initialMedia={media}
             src="/images/hero.jpg"
-            url={media.hero?.url}
-            alt={
-              media.hero?.alt ||
-              (locale === 'fr'
+            fallbackAlt={
+              locale === 'fr'
                 ? "Vue large de la salle d'entraînement pendant un cours"
-                : 'Wide shot of the training hall during a class')
+                : 'Wide shot of the training hall during a class'
             }
             priority
             sizes="100vw"
@@ -136,14 +136,14 @@ export default async function HomePage({
         <div className="wrap">
           <div className={styles.about}>
             <div className={styles.aboutMedia}>
-              <Photo
+              <LivePhoto
+                slot="academy"
+                initialMedia={media}
                 src="/images/academy.jpg"
-                url={media.academy?.url}
-                alt={
-                  media.academy?.alt ||
-                  (locale === 'fr'
+                fallbackAlt={
+                  locale === 'fr'
                     ? "L'intérieur de l'académie Chun Wah"
-                    : 'Inside the Chun Wah academy')
+                    : 'Inside the Chun Wah academy'
                 }
                 sizes="(max-width: 860px) 100vw, 50vw"
               />
@@ -175,11 +175,11 @@ export default async function HomePage({
               <p className="lead">{t('programsIntro')}</p>
             </div>
 
-            <div className={styles.cardGrid}>
-              {programsByOrder.map((program) => (
-                <ProgramCard key={program.slug} program={program} locale={locale} />
-              ))}
-            </div>
+            <ProgramsList
+              initialPrograms={programsByOrder}
+              locale={locale}
+              className={styles.cardGrid}
+            />
 
             <div className={styles.centerLink}>
               <Link href="/cours" className="btn btn-outline">

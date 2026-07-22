@@ -3,12 +3,13 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import { site } from '@/data/site';
-import { roadmap } from '@/lib/roadmap';
+import { roadmap, hasRoadmapContent } from '@/lib/roadmap';
 import { buildMetadata, absoluteUrl } from '@/lib/seo';
 import { assertNavVisible } from '@/lib/settings';
 import { breadcrumbSchema } from '@/lib/schema';
 import PageHeader from '@/components/PageHeader';
 import JsonLd from '@/components/JsonLd';
+import RoadmapFigure from '@/components/RoadmapFigure';
 import styles from './parcours.module.css';
 
 export async function generateMetadata({
@@ -27,11 +28,6 @@ export async function generateMetadata({
   });
 }
 
-/** A URL points at a PDF when its path ends in .pdf (query string aside). */
-function isPdf(url: string): boolean {
-  return /\.pdf(\?.*)?$/i.test(url);
-}
-
 export default async function RoadmapPage({
   params,
 }: {
@@ -44,14 +40,10 @@ export default async function RoadmapPage({
   const t = await getTranslations('roadmap');
   const tn = await getTranslations('nav');
 
-  // What is the visual centrepiece? An uploaded image wins; otherwise a PDF file
-  // is embedded. `fileUrl` is always offered as a download when present. Le
-  // parcours vient du snapshot baké au build (src/lib/roadmap.data.json) : un
-  // brouillon y arrive vide, d'où l'état « bientôt disponible ».
-  const image = roadmap.imageUrl;
-  const file = roadmap.fileUrl;
-  const showPdfEmbed = !image && !!file && isPdf(file);
-  const hasContent = !!image || showPdfEmbed;
+  // Le schéma lui-même est rendu par RoadmapFigure (composant client, réaligné
+  // sur l'API). Ici on ne garde que de quoi décider si la frise décorative a du
+  // sens : le snapshot baké suffit.
+  const hasContent = hasRoadmapContent(roadmap);
 
   // Decorative milestone nodes for the journey strip — content-neutral so they
   // never contradict whatever the academy drew on its own map.
@@ -83,49 +75,7 @@ export default async function RoadmapPage({
             ))}
           </ol>
 
-          {!hasContent ? (
-            <p className="lead" style={{ textAlign: 'center' }}>
-              {t('empty')}
-            </p>
-          ) : (
-            <figure className={styles.mapFrame}>
-              <div className={styles.mapInner}>
-                {image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={image}
-                    alt={roadmap.imageAlt || t('title')}
-                    className={styles.mapImage}
-                  />
-                ) : (
-                  <iframe
-                    src={`${file}#view=FitH`}
-                    title={roadmap.imageAlt || t('title')}
-                    className={styles.mapPdf}
-                    loading="lazy"
-                  />
-                )}
-              </div>
-
-              {roadmap.note && (
-                <figcaption className={styles.caption}>{roadmap.note}</figcaption>
-              )}
-
-              {file && (
-                <div className={styles.actions}>
-                  <a
-                    href={file}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.download}
-                    download
-                  >
-                    ↓ {isPdf(file) ? t('downloadPdf') : t('download')}
-                  </a>
-                </div>
-              )}
-            </figure>
-          )}
+          <RoadmapFigure initialRoadmap={roadmap} />
         </div>
       </section>
 

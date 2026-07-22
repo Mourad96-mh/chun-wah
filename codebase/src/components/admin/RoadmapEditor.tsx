@@ -1,17 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { adminApi } from '@/lib/adminApi';
+import { normalizeRoadmap, type Roadmap } from '@/lib/roadmap';
 import ImageField from './ImageField';
 import FileField from './FileField';
 
-export interface RoadmapFormValues {
-  imageUrl: string;
-  imageAlt: string;
-  fileUrl: string;
-  note: string;
-  published: boolean;
-}
+/** Les champs du formulaire sont exactement ceux du parcours (voir lib/roadmap). */
+export type RoadmapFormValues = Roadmap;
 
 const EMPTY: RoadmapFormValues = {
   imageUrl: '',
@@ -27,8 +23,6 @@ const EMPTY: RoadmapFormValues = {
  * so this is a settings-style form, not a list.
  */
 export default function RoadmapEditor({ initial }: { initial?: RoadmapFormValues }) {
-  const router = useRouter();
-
   const [values, setValues] = useState<RoadmapFormValues>(initial ?? EMPTY);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
@@ -43,29 +37,18 @@ export default function RoadmapEditor({ initial }: { initial?: RoadmapFormValues
     setNotice('');
     setBusy(true);
 
-    const payload = { ...values, published: publish };
-
     try {
-      const res = await fetch('/api/admin/roadmap', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error ?? 'Enregistrement impossible.');
-        return;
-      }
-      const published = Boolean(data.roadmap?.published);
-      setValues((v) => ({ ...v, published }));
+      const saved = normalizeRoadmap(
+        await adminApi.updateRoadmap({ ...values, published: publish }),
+      );
+      setValues(saved);
       setNotice(
-        published
-          ? 'Parcours enregistré et publié — visible sur la page Parcours.'
+        saved.published
+          ? 'Parcours enregistré et publié — visible sur la page Parcours au prochain déploiement.'
           : 'Brouillon enregistré — invisible sur le site public.',
       );
-      router.refresh();
-    } catch {
-      setError('Erreur réseau. Réessayez.');
+    } catch (err) {
+      setError((err as Error).message || 'Enregistrement impossible.');
     } finally {
       setBusy(false);
     }

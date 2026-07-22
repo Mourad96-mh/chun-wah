@@ -16,11 +16,11 @@ chunwah.ma  (Hostinger : domaine + frontend statique)
 - Le HTML public est baké au build (SEO) depuis un snapshot des articles, et se
   rafraîchit en direct depuis l'API dans le navigateur. L'admin parle directement à l'API.
 
-> **État de la migration.** Le backend et le vertical *auth + blog/articles* sont
-> portés. Les autres ressources (livres, cours, parcours, vidéos, médias, réglages)
-> sont encore en routes Next dans `codebase/src/app/api/*` et **doivent être migrées
-> vers `codebase/server/`** avant que `npm run build` (export) passe au vert. Voir
-> la checklist en bas.
+> **État de la migration.** Portés : *auth, blog/articles, livres, cours, réglages,
+> médias, parcours*. Restent les **vidéos** et le **tableau de bord admin**, encore
+> en routes Next dans `codebase/src/app/api/*` : ils **doivent être migrés vers
+> `codebase/server/`** avant que `npm run build` (export) passe au vert. Voir la
+> checklist en bas.
 
 ---
 
@@ -85,7 +85,9 @@ Le pattern est établi sur **auth + articles**. Répliquer pour chaque ressource
 - [x] **Livres** — modèle `Book`, routes `/api/books`, admin `livres/*`, page `[locale]/livres`.
 - [x] **Cours** — modèle `Program`, routes `/api/programs`, admin `cours/*`, pages `[locale]/cours*`
       (seam `src/lib/programs.ts` inchangé pour home/footer/horaires/sitemap).
-- [ ] **Parcours** — modèle `Roadmap`, routes `/api/roadmap`, admin `parcours`.
+- [x] **Parcours** — modèle `Roadmap` (singleton), routes `/api/roadmap` (+ `/api/uploads/doc`
+      pour le PDF), admin `parcours`, page `[locale]/parcours`. Seam `src/lib/roadmap.ts`,
+      snapshot `roadmap.data.json` ; l'endpoint public ne renvoie que le parcours publié.
 - [ ] **Vidéos** — modèle `Video`, routes `/api/videos`, admin `videos/*`.
 - [x] **Médias** — modèle `Media`, routes `/api/media`, admin `medias`. Seam `src/lib/media.ts`
       inchangé → noms d'instructeurs + images (hero/à propos/portraits) désormais snapshot,
@@ -100,6 +102,6 @@ Le pattern est établi sur **auth + articles**. Répliquer pour chaque ressource
 - [ ] Supprimer `src/app/api/*`, les `src/models/*`, `src/lib/{auth,db}.ts` du frontend,
       et purger `mongoose/bcryptjs/jose/cloudinary` de `codebase/package.json`.
 
-> **Note sur le build export** : tant que **Réglages** (layout partagé) et **Médias**
-> (instructeurs) ne sont pas portés, `next build` reste rouge même pour les ressources
-> déjà migrées — leur *donnée* est prête, mais le layout commun lit encore Mongo.
+> **Note sur le build export** : il reste rouge tant que les **vidéos** (page d'accueil +
+> admin `videos/[id]`, route dynamique impossible en export) et le **tableau de bord**
+> admin lisent encore Mongo. Toutes les autres ressources sont déjà servies par snapshot.

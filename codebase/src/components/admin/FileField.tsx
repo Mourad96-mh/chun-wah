@@ -1,11 +1,12 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { adminApi } from '@/lib/adminApi';
 
 /**
  * Optional downloadable file (PDF or hi-res image). Uploads to Cloudinary via
- * /api/admin/upload/doc when configured; the client can always paste a URL, so
- * the admin stays usable without keys and for files above the 4 Mo route limit.
+ * l'API Express when configured; the client can always paste a URL, so the
+ * admin stays usable without keys and for files above the upload size limit.
  */
 export default function FileField({
   value,
@@ -26,17 +27,10 @@ export default function FileField({
     setError('');
     setBusy(true);
     try {
-      const form = new FormData();
-      form.append('file', file);
-      const res = await fetch('/api/admin/upload/doc', { method: 'POST', body: form });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error ?? "Échec de l'upload.");
-        return;
-      }
+      const data = await adminApi.uploadDoc(file);
       onChange(data.url);
-    } catch {
-      setError('Erreur réseau pendant l’upload.');
+    } catch (err) {
+      setError((err as Error).message || "Échec de l'upload.");
     } finally {
       setBusy(false);
       if (inputRef.current) inputRef.current.value = '';

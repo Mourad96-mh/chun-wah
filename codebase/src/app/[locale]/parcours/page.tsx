@@ -3,16 +3,13 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import { site } from '@/data/site';
-import { dbConnect } from '@/lib/db';
-import { Roadmap, type RoadmapDoc } from '@/models/Roadmap';
+import { roadmap } from '@/lib/roadmap';
 import { buildMetadata, absoluteUrl } from '@/lib/seo';
 import { assertNavVisible } from '@/lib/settings';
 import { breadcrumbSchema } from '@/lib/schema';
 import PageHeader from '@/components/PageHeader';
 import JsonLd from '@/components/JsonLd';
 import styles from './parcours.module.css';
-
-export const revalidate = 300;
 
 export async function generateMetadata({
   params,
@@ -28,12 +25,6 @@ export async function generateMetadata({
     href: '/parcours',
     locale,
   });
-}
-
-/** The roadmap is a singleton (one uploaded illustration keyed 'main'). */
-async function fetchRoadmap(): Promise<RoadmapDoc | null> {
-  await dbConnect();
-  return Roadmap.findOne({ key: 'main', published: true }).lean<RoadmapDoc>();
 }
 
 /** A URL points at a PDF when its path ends in .pdf (query string aside). */
@@ -53,18 +44,12 @@ export default async function RoadmapPage({
   const t = await getTranslations('roadmap');
   const tn = await getTranslations('nav');
 
-  // Degrade to the empty state rather than failing when the DB is unreachable.
-  let roadmap: RoadmapDoc | null = null;
-  try {
-    roadmap = await fetchRoadmap();
-  } catch (err) {
-    console.error('[parcours] roadmap unavailable:', err);
-  }
-
   // What is the visual centrepiece? An uploaded image wins; otherwise a PDF file
-  // is embedded. `fileUrl` is always offered as a download when present.
-  const image = roadmap?.imageUrl?.trim() || '';
-  const file = roadmap?.fileUrl?.trim() || '';
+  // is embedded. `fileUrl` is always offered as a download when present. Le
+  // parcours vient du snapshot baké au build (src/lib/roadmap.data.json) : un
+  // brouillon y arrive vide, d'où l'état « bientôt disponible ».
+  const image = roadmap.imageUrl;
+  const file = roadmap.fileUrl;
   const showPdfEmbed = !image && !!file && isPdf(file);
   const hasContent = !!image || showPdfEmbed;
 
@@ -109,20 +94,20 @@ export default async function RoadmapPage({
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={image}
-                    alt={roadmap?.imageAlt?.trim() || t('title')}
+                    alt={roadmap.imageAlt || t('title')}
                     className={styles.mapImage}
                   />
                 ) : (
                   <iframe
                     src={`${file}#view=FitH`}
-                    title={roadmap?.imageAlt?.trim() || t('title')}
+                    title={roadmap.imageAlt || t('title')}
                     className={styles.mapPdf}
                     loading="lazy"
                   />
                 )}
               </div>
 
-              {roadmap?.note?.trim() && (
+              {roadmap.note && (
                 <figcaption className={styles.caption}>{roadmap.note}</figcaption>
               )}
 

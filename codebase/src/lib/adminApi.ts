@@ -123,6 +123,12 @@ export const adminApi = {
   updateSettings: (hiddenNav: string[]) =>
     request('/api/settings', { method: 'PUT', body: { hiddenNav }, auth: true }),
 
+  // --- Parcours de l'élève ---------------------------------------------------
+  // Lecture via l'endpoint admin : il renvoie aussi le brouillon non publié.
+  getRoadmap: () => request('/api/roadmap/admin', { auth: true }),
+  updateRoadmap: (b: unknown) =>
+    request('/api/roadmap', { method: 'PUT', body: b, auth: true }),
+
   // --- Images du site (médias) -----------------------------------------------
   // Lecture via l'endpoint public (pas besoin d'auth pour lire l'état courant).
   getMedia: () => request('/api/media'),
@@ -136,5 +142,12 @@ export const adminApi = {
     if (folder) fd.append('folder', folder);
     fd.append('file', file);
     return request('/api/uploads', { method: 'POST', body: fd, auth: true, isForm: true });
+  },
+
+  /** Document téléversable (PDF surtout) — endpoint distinct : resource_type auto. */
+  async uploadDoc(file: File) {
+    const fd = new FormData();
+    fd.append('file', file);
+    return request('/api/uploads/doc', { method: 'POST', body: fd, auth: true, isForm: true });
   },
 };

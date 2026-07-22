@@ -5,6 +5,12 @@
    ========================================================================== */
 
 :root {
+  /* Le site a un thème sombre unique. Sans cette déclaration, Chrome Android et
+     Samsung Internet appliquent leur « dark mode » automatique et RÉINVERSENT
+     les éléments clairs — les barres du menu burger devenaient noires sur fond
+     noir, donc invisibles. */
+  color-scheme: dark;
+
   /* Palette — charcoal base, warm red accent, brass highlight. */
   --ink: #0e0f11;
   --ink-2: #17191d;

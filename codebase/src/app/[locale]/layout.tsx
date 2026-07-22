@@ -29,6 +29,9 @@ const oswald = Oswald({
 
 export const viewport: Viewport = {
   themeColor: '#0e0f11',
+  // Thème sombre assumé : empêche le dark mode automatique des navigateurs
+  // mobiles de réinverser les couleurs (cf. color-scheme dans globals.css).
+  colorScheme: 'dark',
   width: 'device-width',
   initialScale: 1,
 };

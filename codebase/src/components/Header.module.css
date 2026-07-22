@@ -124,12 +124,16 @@
   border: 1px solid var(--line);
   border-radius: var(--radius);
   cursor: pointer;
+  /* Les barres héritent de cette couleur (voir .burgerBar). */
+  color: var(--paper);
 }
 
 .burgerBar {
   display: block;
   height: 2px;
-  background: var(--paper);
+  /* currentColor plutôt qu'une variable : le trait suit la couleur du bouton,
+     y compris en mode contraste élevé où l'UA impose sa propre palette. */
+  background: currentColor;
   transition: transform var(--transition), opacity var(--transition);
 }
 

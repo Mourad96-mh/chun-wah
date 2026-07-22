@@ -1,4 +1,6 @@
-import { getTranslations } from 'next-intl/server';
+'use client';
+
+import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import type { Program } from '@/data/types';
@@ -6,14 +8,16 @@ import { pick } from '@/lib/localized';
 import Photo from './Photo';
 import styles from './ProgramCard.module.css';
 
-export default async function ProgramCard({
+// Composant client : les listes de cours se réalignent sur l'API après le
+// chargement (voir ProgramsList / useLiveData), ce qui impose un rendu client.
+export default function ProgramCard({
   program,
   locale,
 }: {
   program: Program;
   locale: Locale;
 }) {
-  const t = await getTranslations('common');
+  const t = useTranslations('common');
 
   return (
     <article className={styles.card}>

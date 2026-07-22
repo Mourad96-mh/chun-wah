@@ -55,6 +55,20 @@ const publicPrograms: PublicProgram[] = (rawPrograms as ProgramLean[])
   .map(toPublic)
   .sort((a, b) => a.order - b.order || a.name.fr.localeCompare(b.name.fr));
 
+/**
+ * Cours publiés lus EN DIRECT depuis l'API (même shape que le snapshot).
+ * Utilisé côté client pour refléter l'admin sans redéployer — voir useLiveData.
+ */
+export async function fetchPrograms(): Promise<PublicProgram[]> {
+  const api = process.env.NEXT_PUBLIC_API_URL || '';
+  const res = await fetch(`${api}/api/programs`);
+  if (!res.ok) throw new Error(`GET /api/programs → ${res.status}`);
+  const raw = (await res.json()) as ProgramLean[];
+  return raw
+    .map(toPublic)
+    .sort((a, b) => a.order - b.order || a.name.fr.localeCompare(b.name.fr));
+}
+
 /** Cours publiés dans l'ordre d'affichage (shape publique). */
 export async function getPrograms(): Promise<PublicProgram[]> {
   return publicPrograms;

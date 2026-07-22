@@ -3,6 +3,7 @@ import type { Locale } from '@/i18n/routing';
 import { videos } from '@/lib/videos';
 import { videoObjectsSchema } from '@/lib/schema';
 import JsonLd from './JsonLd';
+import VideoGrid from './VideoGrid';
 import styles from './VideoShowcase.module.css';
 
 /**
@@ -28,24 +29,7 @@ export default async function VideoShowcase({ locale }: { locale: Locale }) {
           <p className="lead">{t('videosIntro')}</p>
         </div>
 
-        <div className={styles.grid}>
-          {videos.map((v) => (
-            <figure key={v.id} className={styles.item}>
-              <video
-                className={styles.video}
-                src={v.videoUrl}
-                poster={v.poster || undefined}
-                controls
-                preload="none"
-                playsInline
-              />
-              <figcaption className={styles.caption}>
-                <span className={styles.title}>{v.title}</span>
-                {v.description && <span className={styles.desc}>{v.description}</span>}
-              </figcaption>
-            </figure>
-          ))}
-        </div>
+        <VideoGrid initialVideos={videos} />
       </div>
 
       {schema.length > 0 && <JsonLd data={schema} />}

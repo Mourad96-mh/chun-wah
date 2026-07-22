@@ -3,10 +3,10 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Locale } from '@/i18n/routing';
 import { site } from '@/data/site';
 import { buildMetadata } from '@/lib/seo';
-import { books, type Book } from '@/lib/books';
+import { books } from '@/lib/books';
 import { assertNavVisible } from '@/lib/settings';
 import PageHeader from '@/components/PageHeader';
-import styles from './books.module.css';
+import BooksList from '@/components/BooksList';
 
 // Livres en français uniquement : on ne génère que /fr/livres.
 export function generateStaticParams() {
@@ -41,15 +41,8 @@ export default async function BooksPage({
   const t = await getTranslations('books');
   const tn = await getTranslations('nav');
 
-  // Livres publiés depuis le snapshot baké au build (src/lib/books.data.json).
-  // Regroupés par catégorie, dans l'ordre où ils arrivent (déjà trié par `order`).
-  const groups = new Map<string, Book[]>();
-  for (const book of books) {
-    const key = book.category?.trim() || t('uncategorized');
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key)!.push(book);
-  }
-
+  // Le HTML est baké depuis le snapshot (src/lib/books.data.json) pour le SEO ;
+  // BooksList le réaligne ensuite sur l'API pour refléter l'admin sans déployer.
   return (
     <>
       <PageHeader
@@ -60,41 +53,7 @@ export default async function BooksPage({
 
       <section className="section">
         <div className="wrap">
-          {books.length === 0 ? (
-            <p className="lead">{t('empty')}</p>
-          ) : (
-            [...groups.entries()].map(([category, groupBooks]) => (
-              <div key={category} className={styles.group}>
-                <h2 className={styles.groupTitle}>{category}</h2>
-                <div className={styles.list}>
-                  {groupBooks.map((book) => (
-                    <article key={book.id} className={styles.book}>
-                      {book.coverImage ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          className={styles.cover}
-                          src={book.coverImage}
-                          alt={`Couverture de ${book.title}`}
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className={styles.coverEmpty} aria-hidden="true">
-                          書
-                        </div>
-                      )}
-
-                      <div>
-                        <h3 className={styles.title}>{book.title}</h3>
-                        <span className={styles.author}>{book.author}</span>
-                        <p className={styles.recommendation}>{book.recommendation}</p>
-                        {book.level && <span className={styles.level}>{book.level}</span>}
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            ))
-          )}
+          <BooksList initialBooks={books} />
         </div>
       </section>
     </>

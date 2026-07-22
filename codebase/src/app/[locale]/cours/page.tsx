@@ -6,7 +6,7 @@ import { buildMetadata } from '@/lib/seo';
 import { getPrograms } from '@/lib/programs';
 import { assertNavVisible } from '@/lib/settings';
 import PageHeader from '@/components/PageHeader';
-import ProgramCard from '@/components/ProgramCard';
+import ProgramsList from '@/components/ProgramsList';
 import styles from '../page.module.css';
 
 export async function generateMetadata({
@@ -49,11 +49,11 @@ export default async function ProgramsPage({
 
       <section className="section">
         <div className="wrap">
-          <div className={styles.cardGrid}>
-            {programsByOrder.map((program) => (
-              <ProgramCard key={program.slug} program={program} locale={locale} />
-            ))}
-          </div>
+          <ProgramsList
+            initialPrograms={programsByOrder}
+            locale={locale}
+            className={styles.cardGrid}
+          />
         </div>
       </section>
     </>

@@ -1,5 +1,14 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './admin.css';
+
+// L'admin se consulte aussi depuis un téléphone : thème clair déclaré (pas de
+// dark mode automatique) et zoom laissé libre.
+export const viewport: Viewport = {
+  colorScheme: 'light',
+  themeColor: '#16181d',
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: 'Administration — Chun Wah',

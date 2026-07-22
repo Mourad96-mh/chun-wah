@@ -117,6 +117,12 @@ export const adminApi = {
   deleteProgram: (id: string) =>
     request(`/api/programs/${id}`, { method: 'DELETE', auth: true }),
 
+  // --- Réglages du menu ------------------------------------------------------
+  // Lecture via l'endpoint public (pas besoin d'auth pour lire l'état courant).
+  getSettings: () => request('/api/settings'),
+  updateSettings: (hiddenNav: string[]) =>
+    request('/api/settings', { method: 'PUT', body: { hiddenNav }, auth: true }),
+
   // --- Uploads (Cloudinary) --------------------------------------------------
   async upload(file: File, folder?: string) {
     const fd = new FormData();

@@ -1,24 +1,33 @@
-import { redirect } from 'next/navigation';
-import { getSession } from '@/lib/auth';
-import { dbConnect } from '@/lib/db';
-import { Settings } from '@/models/Settings';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { adminApi } from '@/lib/adminApi';
 import AdminShell from '@/components/admin/AdminShell';
 import NavSettings from '@/components/admin/NavSettings';
 
-export const dynamic = 'force-dynamic';
+export default function AdminSettingsPage() {
+  const [hidden, setHidden] = useState<string[] | null>(null);
+  const [error, setError] = useState('');
 
-export default async function AdminSettingsPage() {
-  const session = await getSession();
-  if (!session) redirect('/admin/login');
-
-  await dbConnect();
-  const doc = await Settings.findOne({ key: 'main' })
-    .select('hiddenNav')
-    .lean<{ hiddenNav?: string[] }>();
+  useEffect(() => {
+    adminApi
+      .getSettings()
+      .then((s) => setHidden(Array.isArray(s?.hiddenNav) ? s.hiddenNav : []))
+      .catch((e: Error) => setError(e.message));
+  }, []);
 
   return (
-    <AdminShell userName={session.name || session.email}>
-      <NavSettings initialHidden={doc?.hiddenNav ?? []} />
+    <AdminShell>
+      {error && (
+        <div className="a-alert a-alert-error" role="alert">
+          {error}
+        </div>
+      )}
+      {hidden ? (
+        <NavSettings initialHidden={hidden} />
+      ) : (
+        !error && <p className="a-sub">Chargement…</p>
+      )}
     </AdminShell>
   );
 }

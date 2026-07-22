@@ -7,6 +7,7 @@ import authRoutes from './routes/auth.js';
 import articleRoutes from './routes/articles.js';
 import bookRoutes from './routes/books.js';
 import programRoutes from './routes/programs.js';
+import settingsRoutes from './routes/settings.js';
 import uploadRoutes from './routes/uploads.js';
 
 const app = express();
@@ -24,6 +25,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/articles', articleRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/programs', programRoutes);
+app.use('/api/settings', settingsRoutes);
 app.use('/api/uploads', uploadRoutes);
 
 // 404

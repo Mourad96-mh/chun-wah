@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { adminApi } from '@/lib/adminApi';
 import { TOGGLEABLE_NAV } from '@/lib/nav';
 
 /**
@@ -13,8 +13,6 @@ import { TOGGLEABLE_NAV } from '@/lib/nav';
  * naturally: on = shown.
  */
 export default function NavSettings({ initialHidden }: { initialHidden: string[] }) {
-  const router = useRouter();
-
   const [hidden, setHidden] = useState<Set<string>>(() => new Set(initialHidden));
   const [error, setError] = useState('');
   const [savingKey, setSavingKey] = useState<string | null>(null);
@@ -23,27 +21,18 @@ export default function NavSettings({ initialHidden }: { initialHidden: string[]
     setError('');
     setSavingKey(key);
     try {
-      const res = await fetch('/api/admin/settings', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ hiddenNav: [...next] }),
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        // Roll back the optimistic flip so the UI never lies about what's saved.
-        setHidden(previous);
-        setError(
-          res.status === 401
-            ? 'Session expirée — reconnectez-vous, puis réessayez.'
-            : (data.error ?? 'Enregistrement impossible. Réessayez.'),
-        );
-        return;
-      }
-      // Refresh so the public header (root layout) reflects the change.
-      router.refresh();
-    } catch {
+      await adminApi.updateSettings([...next]);
+      // Le header public (export statique) reflétera le changement au prochain
+      // build + upload ; l'admin voit l'état à jour immédiatement (optimiste).
+    } catch (err) {
+      const e = err as Error & { status?: number };
+      // Roll back the optimistic flip so the UI never lies about what's saved.
       setHidden(previous);
-      setError('Erreur réseau. Vérifiez votre connexion et réessayez.');
+      setError(
+        e.status === 401
+          ? 'Session expirée — reconnectez-vous, puis réessayez.'
+          : e.message || 'Enregistrement impossible. Réessayez.',
+      );
     } finally {
       setSavingKey(null);
     }

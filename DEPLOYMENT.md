@@ -89,8 +89,9 @@ Le pattern est établi sur **auth + articles**. Répliquer pour chaque ressource
 - [ ] **Vidéos** — modèle `Video`, routes `/api/videos`, admin `videos/*`.
 - [ ] **Médias** — modèle `Media`, routes `/api/media`, admin `medias`. **Débloque** les noms
       d'instructeurs (`src/lib/instructors.ts` → `src/lib/media.ts`) sur les pages cours/horaires.
-- [ ] **Réglages** — modèle `Settings`, routes `/api/settings`, admin `reglages`. **Débloque**
-      le `[locale]/layout.tsx` (`getPublicSettings`) dont dépend CHAQUE page → gate du build export.
+- [x] **Réglages** — modèle `Settings`, routes `/api/settings`, admin `reglages`. Seam
+      `src/lib/settings.ts` inchangé → le `[locale]/layout.tsx` (partagé par CHAQUE page)
+      ne lit plus Mongo.
 - [ ] Convertir les pages admin restantes en **composants client** (`adminApi` + Bearer)
       et retirer `src/middleware.ts` (l'auth admin devient client-side).
 - [ ] Retirer `revalidate` / lectures Mongo restantes incompatibles export ; baker chaque

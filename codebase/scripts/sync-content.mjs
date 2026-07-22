@@ -13,6 +13,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const articlesFile = path.resolve(__dirname, '../src/lib/articles.data.json');
 const booksFile = path.resolve(__dirname, '../src/lib/books.data.json');
 const programsFile = path.resolve(__dirname, '../src/lib/programs.data.json');
+const settingsFile = path.resolve(__dirname, '../src/lib/settings.data.json');
 
 // Charge .env.local (ce script tourne hors de Next, qui sinon lirait le fichier).
 function loadEnvLocal() {
@@ -43,6 +44,22 @@ async function syncCollection(endpoint, file, label) {
   }
 }
 
+// Variante singleton : la réponse est un objet (pas un tableau), écrit tel quel.
+async function syncObject(endpoint, file, label) {
+  try {
+    const res = await fetch(`${API}${endpoint}`);
+    if (!res.ok) throw new Error(`${API}${endpoint} → HTTP ${res.status}`);
+    const data = await res.json();
+    if (Array.isArray(data) || typeof data !== 'object' || data === null) {
+      throw new Error('réponse inattendue (pas un objet)');
+    }
+    fs.writeFileSync(file, JSON.stringify(data, null, 2));
+    console.log(`[sync] ${label} synchronisé(s) depuis ${API}`);
+  } catch (e) {
+    console.warn(`[sync] échec ${label} — conservation du snapshot existant :`, e.message);
+  }
+}
+
 async function main() {
   if (!API) {
     console.warn('[sync] CONTENT_API_URL non défini — conservation des snapshots existants');
@@ -51,7 +68,8 @@ async function main() {
   await syncCollection('/api/articles', articlesFile, 'articles');
   await syncCollection('/api/books', booksFile, 'livres');
   await syncCollection('/api/programs', programsFile, 'cours');
-  // TODO (migration) : ajouter parcours, vidéos, réglages…
+  await syncObject('/api/settings', settingsFile, 'réglages du menu');
+  // TODO (migration) : ajouter parcours, vidéos…
 }
 
 main();

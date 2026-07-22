@@ -16,11 +16,10 @@ chunwah.ma  (Hostinger : domaine + frontend statique)
 - Le HTML public est baké au build (SEO) depuis un snapshot des articles, et se
   rafraîchit en direct depuis l'API dans le navigateur. L'admin parle directement à l'API.
 
-> **État de la migration.** Portés : *auth, blog/articles, livres, cours, réglages,
-> médias, parcours*. Restent les **vidéos** et le **tableau de bord admin**, encore
-> en routes Next dans `codebase/src/app/api/*` : ils **doivent être migrés vers
-> `codebase/server/`** avant que `npm run build` (export) passe au vert. Voir la
-> checklist en bas.
+> **Migration terminée.** Toutes les ressources (auth, blog/articles, livres, cours,
+> réglages, médias, parcours, vidéos, tableau de bord) sont servies par l'API Express ;
+> `codebase/src/app/api/*`, `src/models/*`, `src/lib/{auth,db}.ts` et `src/middleware.ts`
+> ont été supprimés et `npm run build` (export) passe au vert. Voir le récapitulatif en bas.
 
 ---
 
@@ -77,9 +76,11 @@ qu'Apache/LiteSpeed sert pour `/route/`.
 
 ---
 
-## Checklist de migration (reste à porter)
+## Migration vers l'architecture split — récapitulatif
 
-Le pattern est établi sur **auth + articles**. Répliquer pour chaque ressource :
+Toutes les ressources suivent le même pattern : modèle + routes Express, snapshot
+baké par `scripts/sync-content.mjs`, seam client-safe dans `src/lib/`, admin en
+composant client sur `adminApi` (JWT Bearer).
 
 - [x] **Articles / blog** — modèle `Article`, routes `/api/articles`, admin `articles/*`, pages `[locale]/blog*`.
 - [x] **Livres** — modèle `Book`, routes `/api/books`, admin `livres/*`, page `[locale]/livres`.
@@ -88,20 +89,25 @@ Le pattern est établi sur **auth + articles**. Répliquer pour chaque ressource
 - [x] **Parcours** — modèle `Roadmap` (singleton), routes `/api/roadmap` (+ `/api/uploads/doc`
       pour le PDF), admin `parcours`, page `[locale]/parcours`. Seam `src/lib/roadmap.ts`,
       snapshot `roadmap.data.json` ; l'endpoint public ne renvoie que le parcours publié.
-- [ ] **Vidéos** — modèle `Video`, routes `/api/videos`, admin `videos/*`.
+- [x] **Vidéos** — modèle `Video`, routes `/api/videos` (+ `/api/uploads/sign` pour l'upload
+      direct navigateur → Cloudinary), admin `videos/*` (`videos/[id]` → `videos/edit?id=`),
+      seam `src/lib/videos.ts` lu par `VideoShowcase` → l'accueil n'est plus en ISR.
 - [x] **Médias** — modèle `Media`, routes `/api/media`, admin `medias`. Seam `src/lib/media.ts`
       inchangé → noms d'instructeurs + images (hero/à propos/portraits) désormais snapshot,
       pages cours/horaires/home Mongo-free côté médias.
 - [x] **Réglages** — modèle `Settings`, routes `/api/settings`, admin `reglages`. Seam
       `src/lib/settings.ts` inchangé → le `[locale]/layout.tsx` (partagé par CHAQUE page)
       ne lit plus Mongo.
-- [ ] Convertir les pages admin restantes en **composants client** (`adminApi` + Bearer)
-      et retirer `src/middleware.ts` (l'auth admin devient client-side).
-- [ ] Retirer `revalidate` / lectures Mongo restantes incompatibles export ; baker chaque
-      collection via `scripts/sync-content.mjs`.
-- [ ] Supprimer `src/app/api/*`, les `src/models/*`, `src/lib/{auth,db}.ts` du frontend,
-      et purger `mongoose/bcryptjs/jose/cloudinary` de `codebase/package.json`.
+- [x] **Tableau de bord** — compteurs et « dernières modifications » calculés côté client
+      depuis les listes admin de l'API (plus de `countDocuments`).
+- [x] Toutes les pages admin sont des **composants client** (`adminApi` + Bearer) ;
+      `src/middleware.ts` supprimé, la garde d'auth vit dans `AdminShell`.
+- [x] Plus aucun `revalidate` ni lecture Mongo côté frontend ; `sitemap.xml` et
+      `robots.txt` sont `force-static` et lisent les mêmes snapshots que les pages.
+- [x] `src/app/api/*`, `src/models/*`, `src/lib/{auth,db,slug}.ts` supprimés ;
+      `mongoose/bcryptjs/jose/cloudinary/slugify` purgés de `codebase/package.json`.
 
-> **Note sur le build export** : il reste rouge tant que les **vidéos** (page d'accueil +
-> admin `videos/[id]`, route dynamique impossible en export) et le **tableau de bord**
-> admin lisent encore Mongo. Toutes les autres ressources sont déjà servies par snapshot.
+> **Note sur le build export** : `npm run build` exige que l'API soit joignable au moins
+> une fois (`CONTENT_API_URL`), car une route dynamique sans aucun paramètre
+> (`/cours/[slug]`, `/blog/[slug]`) fait échouer l'export. Les snapshots commités
+> servent de filet : si l'API est indisponible, le build réutilise le dernier état connu.

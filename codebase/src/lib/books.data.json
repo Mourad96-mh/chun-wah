@@ -1,1 +1,106 @@
-[]
+[
+  {
+    "id": "6a5fbecb7c6fcdfcd6c51ea7",
+    "title": "Le Tao du Jeet Kune Do",
+    "author": "Bruce Lee",
+    "category": "Philosophie & état d’esprit",
+    "coverImage": "",
+    "createdAt": "2026-07-21T18:47:33.679Z",
+    "level": "Tous niveaux",
+    "order": 10,
+    "recommendation": "Compilé à partir des carnets de Bruce Lee, ce livre culte dépasse largement le seul Jeet Kune Do. C’est une réflexion sur l’efficacité, la simplicité et la liberté du combattant : « absorbe ce qui est utile, rejette ce qui est inutile ». Une lecture qui nourrit la pratique de n’importe quel art martial.",
+    "status": "published",
+    "updatedAt": "2026-07-21T18:47:33.679Z"
+  },
+  {
+    "id": "6a5fbecb7c6fcdfcd6c51ea8",
+    "title": "Wing Chun Kung Fu",
+    "author": "Ip Chun & Michael Tse",
+    "category": "Wing Chun",
+    "coverImage": "",
+    "createdAt": "2026-07-21T18:47:33.776Z",
+    "level": "Débutant à intermédiaire",
+    "order": 20,
+    "recommendation": "Écrit par Ip Chun, fils du légendaire Ip Man et grand maître reconnu, cet ouvrage présente clairement les principes et la première forme du Wing Chun. Un excellent complément à l’entraînement en salle pour comprendre la logique du système entre deux cours.",
+    "status": "published",
+    "updatedAt": "2026-07-21T18:47:33.776Z"
+  },
+  {
+    "id": "6a5fbecb7c6fcdfcd6c51ea9",
+    "author": "Sun Tzu",
+    "title": "L’Art de la guerre",
+    "category": "Stratégie & philosophie",
+    "coverImage": "",
+    "createdAt": "2026-07-21T18:47:33.873Z",
+    "level": "Tous niveaux",
+    "order": 30,
+    "recommendation": "Le plus célèbre traité de stratégie de tous les temps. Ses enseignements sur la préparation, la distance, le moment juste et la connaissance de soi et de l’adversaire résonnent directement avec l’état d’esprit du combat — et avec la vie en général.",
+    "status": "published",
+    "updatedAt": "2026-07-21T18:47:33.873Z"
+  },
+  {
+    "id": "6a5fbecb7c6fcdfcd6c51eaa",
+    "title": "Le Livre des cinq anneaux",
+    "author": "Miyamoto Musashi",
+    "category": "Stratégie & philosophie",
+    "coverImage": "",
+    "createdAt": "2026-07-21T18:47:33.967Z",
+    "level": "Intermédiaire",
+    "order": 40,
+    "recommendation": "Écrit par le plus grand sabreur japonais à la fin de sa vie, ce texte concis lie technique, stratégie et voie intérieure. Une plongée dans l’esprit d’un maître pour qui l’art du combat et l’art de vivre ne font qu’un.",
+    "status": "published",
+    "updatedAt": "2026-07-21T18:47:33.967Z"
+  },
+  {
+    "id": "6a5fbecb7c6fcdfcd6c51eab",
+    "title": "Karaté-Do : ma voie, ma vie",
+    "author": "Gichin Funakoshi",
+    "category": "Philosophie & état d’esprit",
+    "coverImage": "",
+    "createdAt": "2026-07-21T18:47:34.066Z",
+    "level": "Tous niveaux",
+    "order": 50,
+    "recommendation": "L’autobiographie du fondateur du karaté moderne. Au-delà du style, Funakoshi transmet l’esprit du budo : humilité, patience et respect. Ses principes sont universels et parlent à tout pratiquant d’arts martiaux, quelle que soit sa discipline.",
+    "status": "published",
+    "updatedAt": "2026-07-21T18:47:34.066Z"
+  },
+  {
+    "id": "6a5fbecb7c6fcdfcd6c51eac",
+    "author": "Gavin de Becker",
+    "title": "La peur qui vous sauve (The Gift of Fear)",
+    "category": "Self-défense",
+    "coverImage": "",
+    "createdAt": "2026-07-21T18:47:34.161Z",
+    "level": "Tous niveaux",
+    "order": 60,
+    "recommendation": "Un livre essentiel sur la self-défense avant la technique : apprendre à écouter son intuition et à reconnaître les signaux d’un danger. Une référence pour comprendre que la meilleure protection commence par la vigilance et l’anticipation.",
+    "status": "published",
+    "updatedAt": "2026-07-21T18:47:34.161Z"
+  },
+  {
+    "id": "6a5fbecb7c6fcdfcd6c51ead",
+    "author": "Eugen Herrigel",
+    "title": "Le Zen dans l’art chevaleresque du tir à l’arc",
+    "category": "Philosophie & état d’esprit",
+    "coverImage": "",
+    "createdAt": "2026-07-21T18:47:34.255Z",
+    "level": "Tous niveaux",
+    "order": 70,
+    "recommendation": "Le récit d’un philosophe occidental apprenant le tir à l’arc au Japon. Un petit livre lumineux sur la répétition, le lâcher-prise et l’art de « faire sans forcer » — un état recherché dans toute pratique martiale interne comme le taï-chi.",
+    "status": "published",
+    "updatedAt": "2026-07-21T18:47:34.255Z"
+  },
+  {
+    "id": "6a5fbecb7c6fcdfcd6c51eae",
+    "author": "Cheng Man-Ching",
+    "title": "Les Treize Chapitres du Taï-chi Chuan",
+    "category": "Taï-chi & arts internes",
+    "coverImage": "",
+    "createdAt": "2026-07-21T18:47:34.349Z",
+    "level": "Intermédiaire",
+    "order": 80,
+    "recommendation": "Par l’un des maîtres qui ont fait connaître le taï-chi en Occident. Un ouvrage de référence sur les principes internes — relâchement, enracinement, circulation de l’énergie — pour qui veut approfondir sa compréhension au-delà de la forme.",
+    "status": "published",
+    "updatedAt": "2026-07-21T18:47:34.349Z"
+  }
+]

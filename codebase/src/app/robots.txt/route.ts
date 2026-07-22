@@ -9,6 +9,8 @@ import { site } from '@/data/site';
  *   Allow: /
  *   Sitemap: ${site.url}/sitemap.xml
  */
+export const dynamic = 'force-static';
+
 export function GET() {
   const body = `User-agent: *
 Disallow: /

@@ -1,8 +1,7 @@
 import { locales, type Locale } from '@/i18n/routing';
 import { getPrograms } from '@/lib/programs';
 import { absoluteUrl } from '@/lib/seo';
-import { dbConnect } from '@/lib/db';
-import { Article } from '@/models/Article';
+import { articles } from '@/lib/articles';
 import { getPublicSettings } from '@/lib/settings';
 import type { NavKey } from '@/lib/nav';
 
@@ -12,8 +11,10 @@ import type { NavKey } from '@/lib/nav';
  * and this project lives under "…/Bureau/CHUN WAH".
  */
 
-// Picks up newly published articles without a redeploy.
-export const revalidate = 3600;
+// Export statique : le sitemap est écrit une fois au build, à partir des mêmes
+// snapshots que les pages (articles, cours, réglages). Il suit donc exactement
+// ce que le site publie.
+export const dynamic = 'force-static';
 
 type Href = Parameters<typeof absoluteUrl>[0];
 
@@ -70,27 +71,17 @@ export async function GET() {
     { href: '/livres', priority: 0.6, frOnly: true, navKey: 'books' },
   ];
 
-  // Published articles. A database hiccup must not take the sitemap down, so
-  // the static entries are still served if this fails.
-  try {
-    await dbConnect();
-    const articles = await Article.find({ status: 'published' })
-      .sort({ publishedAt: -1 })
-      .select('slug updatedAt publishedAt')
-      .lean();
-
-    for (const article of articles) {
-      const date = article.updatedAt ?? article.publishedAt;
-      entries.push({
-        href: { pathname: '/blog/[slug]' as const, params: { slug: article.slug } },
-        priority: 0.7,
-        frOnly: true,
-        navKey: 'blog',
-        lastmod: date ? new Date(date).toISOString().split('T')[0] : lastmod,
-      });
-    }
-  } catch (err) {
-    console.error('[sitemap] articles unavailable:', err);
+  // Articles publiés, depuis le snapshot baké (l'endpoint public ne renvoie que
+  // les articles publiés).
+  for (const article of articles) {
+    const date = article.updatedAt ?? article.publishedAt;
+    entries.push({
+      href: { pathname: '/blog/[slug]' as const, params: { slug: article.slug } },
+      priority: 0.7,
+      frOnly: true,
+      navKey: 'blog',
+      lastmod: date ? new Date(date).toISOString().split('T')[0] : lastmod,
+    });
   }
 
   // Drop sections the client has hidden — their pages now 404, so they must not

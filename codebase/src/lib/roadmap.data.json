@@ -1,7 +1,7 @@
 {
-  "imageUrl": "",
-  "imageAlt": "",
+  "imageUrl": "/roadmap-demo-kungfu.svg",
+  "imageAlt": "Parcours de progression en kung-fu : du débutant (ceinture blanche) à la maîtrise (ceinture noire), en cinq étapes le long d’un chemin de montagne.",
   "fileUrl": "",
-  "note": "",
-  "published": false
+  "note": "[DÉMO] Exemple de parcours de progression — remplacez cette illustration par votre propre schéma (image ou PDF) depuis le tableau de bord.",
+  "published": true
 }

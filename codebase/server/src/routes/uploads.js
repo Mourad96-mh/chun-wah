@@ -64,4 +64,34 @@ router.post('/doc', auth, upload.single('file'), async (req, res, next) => {
   }
 });
 
+// POST /api/uploads/sign — upload direct signé, pour la vidéo (protégé).
+//
+// Les images passent par ce serveur (quelques Mo, sans risque) ; une vidéo peut
+// peser 100 Mo — la faire transiter par Render serait lent et gourmand en
+// mémoire. Le navigateur l'envoie donc directement à Cloudinary : cette route
+// ne rend qu'une signature courte, l'api_secret ne quitte jamais le serveur.
+router.post('/sign', auth, (req, res) => {
+  if (!CLOUDINARY_CONFIGURED) {
+    return res.status(501).json({
+      error:
+        "L'upload vidéo n'est pas configuré (clés Cloudinary absentes). Collez l'URL d'une vidéo à la place.",
+    });
+  }
+
+  const timestamp = Math.round(Date.now() / 1000);
+  const folder = 'chunwah/videos';
+  const signature = cloudinary.utils.api_sign_request(
+    { timestamp, folder },
+    process.env.CLOUDINARY_API_SECRET
+  );
+
+  res.json({
+    timestamp,
+    folder,
+    signature,
+    apiKey: process.env.CLOUDINARY_API_KEY,
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+  });
+});
+
 export default router;

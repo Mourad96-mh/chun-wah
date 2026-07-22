@@ -123,6 +123,16 @@ export const adminApi = {
   updateSettings: (hiddenNav: string[]) =>
     request('/api/settings', { method: 'PUT', body: { hiddenNav }, auth: true }),
 
+  // --- Vidéos ----------------------------------------------------------------
+  listVideos: () => request('/api/videos/admin/all', { auth: true }),
+  getVideo: (id: string) => request(`/api/videos/admin/${id}`, { auth: true }),
+  createVideo: (b: unknown) =>
+    request('/api/videos', { method: 'POST', body: b, auth: true }),
+  updateVideo: (id: string, b: unknown) =>
+    request(`/api/videos/${id}`, { method: 'PUT', body: b, auth: true }),
+  deleteVideo: (id: string) =>
+    request(`/api/videos/${id}`, { method: 'DELETE', auth: true }),
+
   // --- Parcours de l'élève ---------------------------------------------------
   // Lecture via l'endpoint admin : il renvoie aussi le brouillon non publié.
   getRoadmap: () => request('/api/roadmap/admin', { auth: true }),
@@ -143,6 +153,9 @@ export const adminApi = {
     fd.append('file', file);
     return request('/api/uploads', { method: 'POST', body: fd, auth: true, isForm: true });
   },
+
+  /** Signature d'upload direct navigateur → Cloudinary (vidéos, gros fichiers). */
+  uploadSignature: () => request('/api/uploads/sign', { method: 'POST', auth: true }),
 
   /** Document téléversable (PDF surtout) — endpoint distinct : resource_type auto. */
   async uploadDoc(file: File) {

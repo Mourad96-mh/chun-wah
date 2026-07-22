@@ -19,9 +19,6 @@ import JsonLd from '@/components/JsonLd';
 import VideoShowcase from '@/components/VideoShowcase';
 import styles from './page.module.css';
 
-// The video showcase is managed from /admin and read from MongoDB, so the home
-// page is ISR rather than fully static. Writes call revalidatePath('/fr'|'/en').
-export const revalidate = 300;
 
 export async function generateMetadata({
   params,

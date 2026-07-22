@@ -1,32 +1,45 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
-import { getSession } from '@/lib/auth';
-import { dbConnect } from '@/lib/db';
-import { Article } from '@/models/Article';
-import { Book } from '@/models/Book';
-import { Video } from '@/models/Video';
+import { adminApi } from '@/lib/adminApi';
+import type { ArticleCard } from '@/lib/articles';
+import type { Book } from '@/lib/books';
+import type { Video } from '@/lib/videos';
 import AdminShell from '@/components/admin/AdminShell';
 
-export const dynamic = 'force-dynamic';
+// Le tableau de bord compte désormais côté client, à partir des listes admin de
+// l'API (plus de countDocuments Mongo) : les volumes sont petits et cela évite
+// des endpoints d'agrégation dédiés.
+export default function AdminDashboard() {
+  const [articles, setArticles] = useState<ArticleCard[] | null>(null);
+  const [books, setBooks] = useState<Book[] | null>(null);
+  const [videos, setVideos] = useState<Video[] | null>(null);
+  const [error, setError] = useState('');
 
-export default async function AdminDashboard() {
-  const session = await getSession();
-  if (!session) redirect('/admin/login');
+  useEffect(() => {
+    Promise.all([adminApi.listArticles(), adminApi.listBooks(), adminApi.listVideos()])
+      .then(([a, b, v]) => {
+        setArticles(a);
+        setBooks(b);
+        setVideos(v);
+      })
+      .catch((e: Error) => setError(e.message));
+  }, []);
 
-  await dbConnect();
+  const count = <T extends { status?: string }>(
+    list: T[] | null,
+    status: 'published' | 'draft',
+  ) => (list ? list.filter((x) => x.status === status).length : '…');
 
-  const [publishedArticles, draftArticles, publishedBooks, draftBooks, publishedVideos, recent] =
-    await Promise.all([
-      Article.countDocuments({ status: 'published' }),
-      Article.countDocuments({ status: 'draft' }),
-      Book.countDocuments({ status: 'published' }),
-      Book.countDocuments({ status: 'draft' }),
-      Video.countDocuments({ status: 'published' }),
-      Article.find({}).sort({ updatedAt: -1 }).limit(5).select('title slug status').lean(),
-    ]);
+  // Les 5 derniers articles modifiés (l'API renvoie createdAt/updatedAt).
+  const recent = (articles ?? [])
+    .slice()
+    .sort((a, b) => (b.updatedAt ?? '').localeCompare(a.updatedAt ?? ''))
+    .slice(0, 5);
 
   return (
-    <AdminShell userName={session.name || session.email}>
+    <AdminShell>
       <div className="a-head">
         <div>
           <h1>Tableau de bord</h1>
@@ -57,31 +70,39 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
+      {error && (
+        <div className="a-alert a-alert-error" role="alert">
+          {error}
+        </div>
+      )}
+
       <div className="a-cards">
         <div className="a-card">
-          <div className="a-stat">{publishedArticles}</div>
+          <div className="a-stat">{count(articles, 'published')}</div>
           <div className="a-statLabel">articles publiés</div>
         </div>
         <div className="a-card">
-          <div className="a-stat">{draftArticles}</div>
+          <div className="a-stat">{count(articles, 'draft')}</div>
           <div className="a-statLabel">brouillons</div>
         </div>
         <div className="a-card">
-          <div className="a-stat">{publishedBooks}</div>
+          <div className="a-stat">{count(books, 'published')}</div>
           <div className="a-statLabel">livres publiés</div>
         </div>
         <div className="a-card">
-          <div className="a-stat">{draftBooks}</div>
+          <div className="a-stat">{count(books, 'draft')}</div>
           <div className="a-statLabel">livres en brouillon</div>
         </div>
         <div className="a-card">
-          <div className="a-stat">{publishedVideos}</div>
+          <div className="a-stat">{count(videos, 'published')}</div>
           <div className="a-statLabel">vidéos publiées</div>
         </div>
       </div>
 
       <h2>Dernières modifications</h2>
-      {recent.length === 0 ? (
+      {!articles ? (
+        <p className="a-sub">Chargement…</p>
+      ) : recent.length === 0 ? (
         <div className="a-card a-empty">
           Aucun article pour l’instant.{' '}
           <Link href="/admin/articles/new">Écrire le premier</Link>.
@@ -91,9 +112,9 @@ export default async function AdminDashboard() {
           <table className="a-table">
             <tbody>
               {recent.map((a) => (
-                <tr key={String(a._id)}>
+                <tr key={a.id}>
                   <td>
-                    <Link href={`/admin/articles/${a._id}`} className="a-rowTitle">
+                    <Link href={`/admin/articles/edit?id=${a.id}`} className="a-rowTitle">
                       {a.title}
                     </Link>
                   </td>

@@ -9,6 +9,7 @@ import bookRoutes from './routes/books.js';
 import programRoutes from './routes/programs.js';
 import settingsRoutes from './routes/settings.js';
 import roadmapRoutes from './routes/roadmap.js';
+import videoRoutes from './routes/videos.js';
 import mediaRoutes from './routes/media.js';
 import uploadRoutes from './routes/uploads.js';
 
@@ -29,6 +30,7 @@ app.use('/api/books', bookRoutes);
 app.use('/api/programs', programRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/roadmap', roadmapRoutes);
+app.use('/api/videos', videoRoutes);
 app.use('/api/media', mediaRoutes);
 app.use('/api/uploads', uploadRoutes);
 

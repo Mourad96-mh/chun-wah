@@ -16,6 +16,7 @@ const programsFile = path.resolve(__dirname, '../src/lib/programs.data.json');
 const settingsFile = path.resolve(__dirname, '../src/lib/settings.data.json');
 const mediaFile = path.resolve(__dirname, '../src/lib/media.data.json');
 const roadmapFile = path.resolve(__dirname, '../src/lib/roadmap.data.json');
+const videosFile = path.resolve(__dirname, '../src/lib/videos.data.json');
 
 // Charge .env.local (ce script tourne hors de Next, qui sinon lirait le fichier).
 function loadEnvLocal() {
@@ -73,7 +74,7 @@ async function main() {
   await syncObject('/api/settings', settingsFile, 'réglages du menu');
   await syncObject('/api/media', mediaFile, 'images du site');
   await syncObject('/api/roadmap', roadmapFile, 'parcours de l’élève');
-  // TODO (migration) : ajouter les vidéos…
+  await syncCollection('/api/videos', videosFile, 'vidéos');
 }
 
 main();

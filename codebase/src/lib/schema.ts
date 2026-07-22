@@ -126,7 +126,8 @@ export function videoObjectsSchema(
     description?: string;
     videoUrl: string;
     poster?: string;
-    createdAt?: Date;
+    /** Date ou ISO : le snapshot baké sérialise createdAt en chaîne. */
+    createdAt?: Date | string;
   }[],
 ) {
   const abs = (u: string) => (/^https?:\/\//.test(u) ? u : `${site.url}${u.startsWith('/') ? '' : '/'}${u}`);
@@ -140,7 +141,7 @@ export function videoObjectsSchema(
       description: v.description?.trim() || v.title,
       thumbnailUrl: abs(v.poster as string),
       contentUrl: abs(v.videoUrl),
-      uploadDate: (v.createdAt ?? new Date()).toISOString(),
+      uploadDate: new Date(v.createdAt ?? Date.now()).toISOString(),
     }));
 }
 

@@ -1,15 +1,16 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { adminApi } from '@/lib/adminApi';
 
 const MAX_BYTES = 100 * 1024 * 1024; // Cloudinary free tier caps a video at 100 Mo.
 const ACCEPT = 'video/mp4,video/webm,video/quicktime';
 
 /**
  * Video picker. Uploads the file straight to Cloudinary using a signature from
- * /api/admin/upload/sign (so big files don't hit the serverless body limit),
- * with a progress bar. The client can also paste any direct URL/path — e.g. a
- * self-hosted `/videos/demo.mp4` — so the admin stays usable without keys.
+ * l'API Express (/api/uploads/sign), so a 100 Mo clip never transits through
+ * the API, with a progress bar. The client can also paste any direct URL/path —
+ * e.g. a self-hosted `/videos/demo.mp4` — so the admin stays usable without keys.
  */
 export default function VideoField({
   value,
@@ -38,15 +39,9 @@ export default function VideoField({
       cloudName: string;
     };
     try {
-      const res = await fetch('/api/admin/upload/sign', { method: 'POST' });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error ?? "Échec de la préparation de l'upload.");
-        return;
-      }
-      sign = data;
-    } catch {
-      setError('Erreur réseau. Réessayez.');
+      sign = await adminApi.uploadSignature();
+    } catch (err) {
+      setError((err as Error).message || "Échec de la préparation de l'upload.");
       return;
     }
 

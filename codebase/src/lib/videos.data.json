@@ -1,0 +1,35 @@
+[
+  {
+    "id": "6a5fbecb91736dc9c34411bd",
+    "title": "[DÉMO] Démonstration technique",
+    "description": "Vidéo de démonstration — à remplacer par vos propres images.",
+    "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+    "poster": "https://picsum.photos/seed/chunwah1/800/450",
+    "order": 10,
+    "status": "published",
+    "createdAt": "2026-07-21T18:47:39.630Z",
+    "updatedAt": "2026-07-21T18:47:39.630Z"
+  },
+  {
+    "id": "6a5fbecb91736dc9c34411be",
+    "title": "[DÉMO] Ambiance de cours",
+    "description": "Vidéo de démonstration — à remplacer par vos propres images.",
+    "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    "poster": "https://picsum.photos/seed/chunwah2/800/450",
+    "order": 20,
+    "status": "published",
+    "createdAt": "2026-07-21T18:47:39.632Z",
+    "updatedAt": "2026-07-21T18:47:39.632Z"
+  },
+  {
+    "id": "6a5fbecb91736dc9c34411bf",
+    "title": "[DÉMO] Stage & événements",
+    "description": "Vidéo de démonstration — à remplacer par vos propres images.",
+    "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    "poster": "https://picsum.photos/seed/chunwah3/800/450",
+    "order": 30,
+    "status": "published",
+    "createdAt": "2026-07-21T18:47:39.632Z",
+    "updatedAt": "2026-07-21T18:47:39.632Z"
+  }
+]

@@ -1,26 +1,31 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
-import { getSession } from '@/lib/auth';
-import { dbConnect } from '@/lib/db';
-import { Video } from '@/models/Video';
+import { adminApi } from '@/lib/adminApi';
+import type { Video } from '@/lib/videos';
 import AdminShell from '@/components/admin/AdminShell';
 
-export const dynamic = 'force-dynamic';
+export default function AdminVideosPage() {
+  const [videos, setVideos] = useState<Video[] | null>(null);
+  const [error, setError] = useState('');
 
-export default async function AdminVideosPage() {
-  const session = await getSession();
-  if (!session) redirect('/admin/login');
-
-  await dbConnect();
-  const videos = await Video.find({}).sort({ order: 1, createdAt: -1 }).lean();
+  useEffect(() => {
+    adminApi
+      .listVideos()
+      .then(setVideos)
+      .catch((e: Error) => setError(e.message));
+  }, []);
 
   return (
-    <AdminShell userName={session.name || session.email}>
+    <AdminShell>
       <div className="a-head">
         <div>
           <h1>Vidéos</h1>
           <p className="a-sub">
-            {videos.length} vidéo(s) — section « L’académie en mouvement » de l’accueil.
+            {videos
+              ? `${videos.length} vidéo(s) — section « L’académie en mouvement » de l’accueil.`
+              : 'Chargement…'}
           </p>
         </div>
         <Link href="/admin/videos/new" className="a-btn a-btn-primary">
@@ -28,12 +33,18 @@ export default async function AdminVideosPage() {
         </Link>
       </div>
 
-      {videos.length === 0 ? (
+      {error && (
+        <div className="a-alert a-alert-error" role="alert">
+          {error}
+        </div>
+      )}
+
+      {videos && videos.length === 0 ? (
         <div className="a-card a-empty">
           Aucune vidéo pour l’instant.{' '}
           <Link href="/admin/videos/new">Ajouter la première</Link>.
         </div>
-      ) : (
+      ) : videos ? (
         <div className="a-tableWrap">
           <table className="a-table">
             <thead>
@@ -46,9 +57,9 @@ export default async function AdminVideosPage() {
             </thead>
             <tbody>
               {videos.map((v) => (
-                <tr key={String(v._id)}>
+                <tr key={v.id}>
                   <td>
-                    <Link href={`/admin/videos/${v._id}`} className="a-rowTitle">
+                    <Link href={`/admin/videos/edit?id=${v.id}`} className="a-rowTitle">
                       {v.title}
                     </Link>
                     {v.description && <span className="a-rowMeta">{v.description}</span>}
@@ -60,7 +71,7 @@ export default async function AdminVideosPage() {
                     </span>
                   </td>
                   <td>
-                    <Link href={`/admin/videos/${v._id}`} className="a-btn">
+                    <Link href={`/admin/videos/edit?id=${v.id}`} className="a-btn">
                       Modifier
                     </Link>
                   </td>
@@ -69,7 +80,7 @@ export default async function AdminVideosPage() {
             </tbody>
           </table>
         </div>
-      )}
+      ) : null}
     </AdminShell>
   );
 }

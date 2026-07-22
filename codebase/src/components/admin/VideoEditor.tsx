@@ -3,11 +3,12 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { adminApi } from '@/lib/adminApi';
 import ImageField from './ImageField';
 import VideoField from './VideoField';
 
 export interface VideoFormValues {
-  _id?: string;
+  id?: string;
   title: string;
   description: string;
   videoUrl: string;
@@ -27,7 +28,7 @@ const EMPTY: VideoFormValues = {
 
 export default function VideoEditor({ initial }: { initial?: VideoFormValues }) {
   const router = useRouter();
-  const isNew = !initial?._id;
+  const isNew = !initial?.id;
 
   const [values, setValues] = useState<VideoFormValues>(initial ?? EMPTY);
   const [error, setError] = useState('');
@@ -51,36 +52,23 @@ export default function VideoEditor({ initial }: { initial?: VideoFormValues }) 
     const payload = { ...values, status: status ?? values.status };
 
     try {
-      const res = await fetch(
-        isNew ? '/api/admin/videos' : `/api/admin/videos/${initial!._id}`,
-        {
-          method: isNew ? 'POST' : 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        },
-      );
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error ?? 'Enregistrement impossible.');
-        return;
-      }
+      const saved = isNew
+        ? await adminApi.createVideo(payload)
+        : await adminApi.updateVideo(initial!.id!, payload);
 
       if (isNew) {
-        router.push(`/admin/videos/${data.video._id}`);
-        router.refresh();
+        router.push(`/admin/videos/edit?id=${saved.id}`);
         return;
       }
 
-      setValues((v) => ({ ...v, status: data.video.status }));
+      setValues((v) => ({ ...v, status: saved.status }));
       setNotice(
-        data.video.status === 'published'
-          ? 'Vidéo enregistrée et publiée.'
+        saved.status === 'published'
+          ? 'Vidéo enregistrée et publiée — en ligne au prochain déploiement.'
           : 'Brouillon enregistré.',
       );
-      router.refresh();
-    } catch {
-      setError('Erreur réseau. Réessayez.');
+    } catch (err) {
+      setError((err as Error).message || 'Enregistrement impossible.');
     } finally {
       setBusy(false);
     }
@@ -91,14 +79,10 @@ export default function VideoEditor({ initial }: { initial?: VideoFormValues }) 
 
     setBusy(true);
     try {
-      const res = await fetch(`/api/admin/videos/${initial!._id}`, { method: 'DELETE' });
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error ?? 'Suppression impossible.');
-        return;
-      }
+      await adminApi.deleteVideo(initial!.id!);
       router.push('/admin/videos');
-      router.refresh();
+    } catch (err) {
+      setError((err as Error).message || 'Suppression impossible.');
     } finally {
       setBusy(false);
     }

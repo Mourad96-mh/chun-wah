@@ -7,31 +7,42 @@ export const routing = defineRouting({
   locales,
   defaultLocale: 'fr',
   localePrefix: 'always',
+  // ATTENTION — segments d'URL IDENTIQUES dans les deux langues.
+  //
+  // L'anglais avait ses propres segments (/programs, /schedule…). En SSR c'est
+  // `src/middleware.ts` qui réécrivait ces URL localisées vers les routes
+  // internes ; l'export statique n'a pas de middleware (il a été supprimé), donc
+  // les fichiers sortaient dans /en/cours/ pendant que les liens pointaient vers
+  // /en/programs/ → tout le site anglais renvoyait 404.
+  //
+  // On garde donc les mêmes segments partout : les liens correspondent aux
+  // fichiers générés. Ne pas réintroduire de segments traduits sans repasser à
+  // un rendu serveur.
   pathnames: {
     '/': '/',
     '/cours': {
       fr: '/cours',
-      en: '/programs',
+      en: '/cours',
     },
     '/cours/[slug]': {
       fr: '/cours/[slug]',
-      en: '/programs/[slug]',
+      en: '/cours/[slug]',
     },
     '/parcours': {
       fr: '/parcours',
-      en: '/roadmap',
+      en: '/parcours',
     },
     '/instructeurs': {
       fr: '/instructeurs',
-      en: '/instructors',
+      en: '/instructeurs',
     },
     '/horaires': {
       fr: '/horaires',
-      en: '/schedule',
+      en: '/horaires',
     },
     '/cours-essai-gratuit': {
       fr: '/cours-essai-gratuit',
-      en: '/free-trial-class',
+      en: '/cours-essai-gratuit',
     },
     '/contact': {
       fr: '/contact',

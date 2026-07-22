@@ -1,3 +1,34 @@
 {
-  "items": []
+  "items": [
+    {
+      "slot": "hero",
+      "url": "",
+      "alt": "",
+      "name": ""
+    },
+    {
+      "slot": "academy",
+      "url": "",
+      "alt": "",
+      "name": ""
+    },
+    {
+      "slot": "instructor:sifu-placeholder",
+      "url": "",
+      "alt": "",
+      "name": ""
+    },
+    {
+      "slot": "instructor:instructeur-2",
+      "url": "",
+      "alt": "",
+      "name": ""
+    },
+    {
+      "slot": "instructor:instructrice-3",
+      "url": "",
+      "alt": "",
+      "name": ""
+    }
+  ]
 }

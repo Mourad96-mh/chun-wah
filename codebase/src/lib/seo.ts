@@ -5,9 +5,16 @@ import { site } from '@/data/site';
 
 type Href = Parameters<typeof getPathname>[0]['href'];
 
-/** Absolute URL for a route in a given locale. */
+/**
+ * Absolute URL for a route in a given locale.
+ *
+ * Toujours terminée par « / » : le site est buildé avec `trailingSlash: true`,
+ * donc /fr/ est l'URL réelle et /fr ne fait que rediriger. Sans ça, le sitemap
+ * et les JSON-LD annonçaient /fr là où la canonical dit /fr/.
+ */
 export function absoluteUrl(href: Href, locale: Locale): string {
-  return `${site.url}${getPathname({ href, locale })}`;
+  const path = getPathname({ href, locale });
+  return `${site.url}${path.endsWith('/') ? path : `${path}/`}`;
 }
 
 /**

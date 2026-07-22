@@ -68,6 +68,11 @@ export async function generateMetadata({
       apple: '/apple-touch-icon.png',
     },
     manifest: '/site.webmanifest',
+    // Propriété Google Search Console. Présente aussi dans public/index.html :
+    // c'est ce fichier que Google reçoit sur la racine du domaine.
+    verification: {
+      google: 'niLZpp794Ddf4SHOOQu_whUY0QfevnWDp8fTpITsxHY',
+    },
   };
 }
 

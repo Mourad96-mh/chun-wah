@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { adminApi } from '@/lib/adminApi';
 import ImageField from './ImageField';
 import type { MediaSlot } from '@/lib/media';
 
@@ -27,8 +27,6 @@ export default function MediaManager({
   slots: MediaSlot[];
   initial: Record<string, Item>;
 }) {
-  const router = useRouter();
-
   const [items, setItems] = useState<Record<string, Item>>(() => {
     const base: Record<string, Item> = {};
     for (const s of slots) {
@@ -49,34 +47,24 @@ export default function MediaManager({
     setSavedKey(null);
     setSavingKey(key);
     try {
-      const payload = {
-        items: Object.entries(next).map(([slot, v]) => ({
-          slot,
-          url: v.url,
-          alt: v.alt,
-          name: v.name,
-        })),
-      };
-      const res = await fetch('/api/admin/media', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        setItems(previous); // roll back so the UI never lies about what's saved
-        setError(
-          res.status === 401
-            ? 'Session expirée — reconnectez-vous, puis réessayez.'
-            : (data.error ?? 'Enregistrement impossible. Réessayez.'),
-        );
-        return;
-      }
+      // Toute la carte est renvoyée à chaque fois — l'API la remplace en bloc,
+      // donc aucune course d'écriture partielle.
+      const payload = Object.entries(next).map(([slot, v]) => ({
+        slot,
+        url: v.url,
+        alt: v.alt,
+        name: v.name,
+      }));
+      await adminApi.updateMedia(payload);
       setSavedKey(key);
-      router.refresh();
-    } catch {
-      setItems(previous);
-      setError('Erreur réseau. Vérifiez votre connexion et réessayez.');
+    } catch (err) {
+      const e = err as Error & { status?: number };
+      setItems(previous); // roll back so the UI never lies about what's saved
+      setError(
+        e.status === 401
+          ? 'Session expirée — reconnectez-vous, puis réessayez.'
+          : e.message || 'Enregistrement impossible. Réessayez.',
+      );
     } finally {
       setSavingKey(null);
     }
@@ -157,6 +145,7 @@ export default function MediaManager({
                 hint={slot.hint}
                 value={item.url}
                 onChange={(url) => setUrl(slot.key, url)}
+                folder="chunwah/medias"
               />
 
               <div className="a-field">

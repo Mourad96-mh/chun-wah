@@ -1,23 +1,29 @@
-import { unstable_cache } from 'next/cache';
-import { dbConnect } from '@/lib/db';
-import { Media } from '@/models/Media';
+import rawMedia from '@/lib/media.data.json';
 import { instructors } from '@/data/instructors';
 
-/** Cache tag tying every page's media read to the admin save (revalidateTag). */
+/**
+ * Seam pour les images pilotées par le client. La donnée vient désormais du
+ * snapshot baké au build (src/lib/media.data.json, synchronisé depuis l'API
+ * Express par scripts/sync-content.mjs) — plus de Mongo ni d'unstable_cache,
+ * compatible export statique. L'API publique de ce module (getMediaMap,
+ * MEDIA_SLOTS, MEDIA_KEYS, types) est INCHANGÉE : instructeurs, home, horaires,
+ * pages cours l'appellent tel quel. Seule la source de données a changé.
+ */
+
+/** Conservé pour compat avec l'ancienne route Next encore présente (no-op). */
 export const MEDIA_TAG = 'media-assets';
 
 export interface MediaSlot {
   key: string;
-  /** Admin-facing label (French). */
+  /** Libellé admin (français). */
   label: string;
   hint?: string;
 }
 
 /**
- * The image slots the client can manage from /admin/medias. Instructor slots are
- * derived from the content file so they stay in sync with the roster. Add a row
- * (or another `instructors`-style map) to expose more images — the admin UI, the
- * API validation and the render sites all read from this single list.
+ * Les emplacements d'images gérables depuis /admin/medias. Les emplacements
+ * instructeur sont dérivés du fichier de contenu pour rester synchronisés avec
+ * le roster.
  */
 export const MEDIA_SLOTS: MediaSlot[] = [
   {
@@ -42,40 +48,27 @@ export const MEDIA_KEYS: string[] = MEDIA_SLOTS.map((s) => s.key);
 export interface MediaAsset {
   url: string;
   alt: string;
-  /** Display-name override, used by instructor slots. */
+  /** Nom d'affichage (emplacements instructeur). */
   name: string;
 }
 
 export type MediaMap = Record<string, MediaAsset>;
 
-async function readMedia(): Promise<MediaMap> {
-  await dbConnect();
-  const doc = await Media.findOne({ key: 'main' })
-    .select('items')
-    .lean<{ items?: { slot: string; url: string; alt: string; name: string }[] }>();
+type RawItem = { slot?: string; url?: string; alt?: string; name?: string };
 
+/**
+ * Images téléversées, indexées par emplacement, lues par les pages. Construites
+ * depuis le snapshot baké : un emplacement sans contenu n'apparaît pas (le site
+ * retombe sur son placeholder).
+ */
+export async function getMediaMap(): Promise<MediaMap> {
+  const items = ((rawMedia as { items?: RawItem[] }).items ?? []);
   const map: MediaMap = {};
-  for (const item of doc?.items ?? []) {
-    // Surface known slots that carry any content. A slot with none means "use the
-    // defaults", so it must not appear in the map.
-    if (MEDIA_KEYS.includes(item.slot) && (item.url || item.alt || item.name)) {
-      map[item.slot] = { url: item.url ?? '', alt: item.alt ?? '', name: item.name ?? '' };
+  for (const item of items) {
+    const slot = String(item.slot ?? '');
+    if (MEDIA_KEYS.includes(slot) && (item.url || item.alt || item.name)) {
+      map[slot] = { url: item.url ?? '', alt: item.alt ?? '', name: item.name ?? '' };
     }
   }
   return map;
-}
-
-const cachedMedia = unstable_cache(readMedia, ['media-assets'], { tags: [MEDIA_TAG] });
-
-/**
- * Uploaded images keyed by slot, read by the render sites. Never throws: a DB
- * hiccup degrades to an empty map, i.e. every image falls back to its placeholder.
- */
-export async function getMediaMap(): Promise<MediaMap> {
-  try {
-    return await cachedMedia();
-  } catch (err) {
-    console.error('[media] unavailable, falling back to placeholders:', err);
-    return {};
-  }
 }

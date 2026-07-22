@@ -87,8 +87,9 @@ Le pattern est établi sur **auth + articles**. Répliquer pour chaque ressource
       (seam `src/lib/programs.ts` inchangé pour home/footer/horaires/sitemap).
 - [ ] **Parcours** — modèle `Roadmap`, routes `/api/roadmap`, admin `parcours`.
 - [ ] **Vidéos** — modèle `Video`, routes `/api/videos`, admin `videos/*`.
-- [ ] **Médias** — modèle `Media`, routes `/api/media`, admin `medias`. **Débloque** les noms
-      d'instructeurs (`src/lib/instructors.ts` → `src/lib/media.ts`) sur les pages cours/horaires.
+- [x] **Médias** — modèle `Media`, routes `/api/media`, admin `medias`. Seam `src/lib/media.ts`
+      inchangé → noms d'instructeurs + images (hero/à propos/portraits) désormais snapshot,
+      pages cours/horaires/home Mongo-free côté médias.
 - [x] **Réglages** — modèle `Settings`, routes `/api/settings`, admin `reglages`. Seam
       `src/lib/settings.ts` inchangé → le `[locale]/layout.tsx` (partagé par CHAQUE page)
       ne lit plus Mongo.

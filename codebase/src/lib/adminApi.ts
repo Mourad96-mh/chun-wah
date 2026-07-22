@@ -123,6 +123,12 @@ export const adminApi = {
   updateSettings: (hiddenNav: string[]) =>
     request('/api/settings', { method: 'PUT', body: { hiddenNav }, auth: true }),
 
+  // --- Images du site (médias) -----------------------------------------------
+  // Lecture via l'endpoint public (pas besoin d'auth pour lire l'état courant).
+  getMedia: () => request('/api/media'),
+  updateMedia: (items: unknown[]) =>
+    request('/api/media', { method: 'PUT', body: { items }, auth: true }),
+
   // --- Uploads (Cloudinary) --------------------------------------------------
   async upload(file: File, folder?: string) {
     const fd = new FormData();

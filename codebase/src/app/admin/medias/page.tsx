@@ -1,30 +1,42 @@
-import { redirect } from 'next/navigation';
-import { getSession } from '@/lib/auth';
-import { dbConnect } from '@/lib/db';
-import { Media } from '@/models/Media';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { adminApi } from '@/lib/adminApi';
 import { MEDIA_SLOTS } from '@/lib/media';
 import AdminShell from '@/components/admin/AdminShell';
 import MediaManager from '@/components/admin/MediaManager';
 
-export const dynamic = 'force-dynamic';
+type Item = { url: string; alt: string; name: string };
 
-export default async function AdminMediaPage() {
-  const session = await getSession();
-  if (!session) redirect('/admin/login');
+export default function AdminMediaPage() {
+  const [initial, setInitial] = useState<Record<string, Item> | null>(null);
+  const [error, setError] = useState('');
 
-  await dbConnect();
-  const doc = await Media.findOne({ key: 'main' })
-    .select('items')
-    .lean<{ items?: { slot: string; url: string; alt: string; name: string }[] }>();
-
-  const initial: Record<string, { url: string; alt: string; name: string }> = {};
-  for (const item of doc?.items ?? []) {
-    initial[item.slot] = { url: item.url ?? '', alt: item.alt ?? '', name: item.name ?? '' };
-  }
+  useEffect(() => {
+    adminApi
+      .getMedia()
+      .then((m) => {
+        const map: Record<string, Item> = {};
+        for (const it of Array.isArray(m?.items) ? m.items : []) {
+          map[it.slot] = { url: it.url ?? '', alt: it.alt ?? '', name: it.name ?? '' };
+        }
+        setInitial(map);
+      })
+      .catch((e: Error) => setError(e.message));
+  }, []);
 
   return (
-    <AdminShell userName={session.name || session.email}>
-      <MediaManager slots={MEDIA_SLOTS} initial={initial} />
+    <AdminShell>
+      {error && (
+        <div className="a-alert a-alert-error" role="alert">
+          {error}
+        </div>
+      )}
+      {initial ? (
+        <MediaManager slots={MEDIA_SLOTS} initial={initial} />
+      ) : (
+        !error && <p className="a-sub">Chargement…</p>
+      )}
     </AdminShell>
   );
 }

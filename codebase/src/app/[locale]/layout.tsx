@@ -57,8 +57,6 @@ export async function generateMetadata({
       default: t('metaTitle', { city: site.address.city, name: site.name }),
       template: `%s | ${site.name}`,
     },
-    // TODO: remove once the real domain is live and the client wants indexing.
-    robots: { index: false, follow: false },
   };
 }
 

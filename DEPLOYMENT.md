@@ -3,7 +3,7 @@
 Deux morceaux, déployés séparément :
 
 ```
-chunwah.ma  (Hostinger : domaine + frontend statique)
+cwtcma-morocco.com  (Hostinger : domaine + frontend statique)
    └─ HTML/JS statique dans codebase/out/  ← téléversé dans public_html
         │  appels (fetch navigateur, CORS) ↓
    chunwah-api.onrender.com  (Render : API Express — codebase/server/)
@@ -31,7 +31,7 @@ Le repo a un `render.yaml` (Blueprint) qui déploie `codebase/server`.
    (Service `chunwah-api`, rootDir `codebase/server`, plan Starter.)
 2. Dans le service → **Environment**, régler les vraies valeurs (voir `codebase/server/.env.example`) :
    `MONGODB_URI`, `JWT_SECRET`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`,
-   `CLOUDINARY_API_SECRET`. (`CORS_ORIGIN` est pré-rempli avec les domaines chunwah.ma.)
+   `CLOUDINARY_API_SECRET`. (`CORS_ORIGIN` est pré-rempli avec les domaines cwtcma-morocco.com.)
 3. **MongoDB Atlas → Network Access → Allow 0.0.0.0/0** (Render n'a pas d'IP sortante fixe).
 4. Déployer → on obtient `https://chunwah-api.onrender.com`. L'ouvrir → `{"ok":true,...}`.
 5. Créer l'admin une fois : service Render → **Shell** →
@@ -43,7 +43,7 @@ Builder en local (ou en CI), puis téléverser le dossier `out/`.
 
 1. Dans `codebase/.env.local` (ou l'env CI), régler :
    ```
-   NEXT_PUBLIC_SITE_URL=https://chunwah.ma
+   NEXT_PUBLIC_SITE_URL=https://cwtcma-morocco.com
    NEXT_PUBLIC_API_URL=https://chunwah-api.onrender.com
    CONTENT_API_URL=https://chunwah-api.onrender.com
    ```
@@ -55,7 +55,7 @@ Builder en local (ou en CI), puis téléverser le dossier `out/`.
    ```
 3. Téléverser **le contenu de `codebase/out/`** dans le `public_html` de Hostinger
    (hPanel → File Manager, ou FTP). C'est tout le site.
-4. Activer le SSL pour chunwah.ma dans hPanel (Let's Encrypt gratuit).
+4. Activer le SSL pour cwtcma-morocco.com dans hPanel (Let's Encrypt gratuit).
 5. **Redirection racine** : le site vit sous `/fr/` et `/en/` (pas de middleware en
    statique). Ajouter dans `public_html/.htaccess` une redirection de `/` vers `/fr/` :
    ```apache
@@ -68,7 +68,7 @@ qu'Apache/LiteSpeed sert pour `/route/`.
 
 ## Mise à jour du contenu
 
-- **Éditer un article existant :** via `chunwah.ma/admin` (écrit dans l'API). Les
+- **Éditer un article existant :** via `cwtcma-morocco.com/admin` (écrit dans l'API). Les
   pages blog se rafraîchissent en direct dans le navigateur.
 - **Ajouter un article (nouvelle URL) :** il apparaît en direct dans la liste, mais
   sa page statique SEO nécessite un **rebuild + re-upload** de `out/` (étapes 2–3).

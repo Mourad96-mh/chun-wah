@@ -26,7 +26,7 @@ services:
         value: "20"
       # Origines autorisées à appeler l'API (le site sur Hostinger + le dev local).
       - key: CORS_ORIGIN
-        value: https://chunwah.ma,https://www.chunwah.ma,http://localhost:3000
+        value: https://cwtcma-morocco.com,https://www.cwtcma-morocco.com,http://localhost:3000
       # --- Régler ces vraies valeurs dans le dashboard Render (ne pas commit) ---
       - key: MONGODB_URI
         sync: false

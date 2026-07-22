@@ -2,6 +2,8 @@
 node_modules
 .next
 out
+# Copie du site exporté, prête à téléverser dans public_html (Hostinger).
+dist
 netlify-showcase
 build
 .DS_Store

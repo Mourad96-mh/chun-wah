@@ -1,37 +1,55 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
-import { getSession } from '@/lib/auth';
-import { dbConnect } from '@/lib/db';
-import { Program } from '@/models/Program';
+import { adminApi } from '@/lib/adminApi';
 import AdminShell from '@/components/admin/AdminShell';
 
-export const dynamic = 'force-dynamic';
+type ProgramRow = {
+  id: string;
+  slug: string;
+  name: string;
+  order?: number;
+  status?: 'draft' | 'published';
+};
 
-export default async function AdminProgramsPage() {
-  const session = await getSession();
-  if (!session) redirect('/admin/login');
+export default function AdminProgramsPage() {
+  const [programs, setPrograms] = useState<ProgramRow[] | null>(null);
+  const [error, setError] = useState('');
 
-  await dbConnect();
-  const programs = await Program.find({}).sort({ order: 1, createdAt: 1 }).lean();
+  useEffect(() => {
+    adminApi
+      .listPrograms()
+      .then(setPrograms)
+      .catch((e: Error) => setError(e.message));
+  }, []);
 
   return (
-    <AdminShell userName={session.name || session.email}>
+    <AdminShell>
       <div className="a-head">
         <div>
           <h1>Cours</h1>
-          <p className="a-sub">{programs.length} cours au total.</p>
+          <p className="a-sub">
+            {programs ? `${programs.length} cours au total.` : 'Chargement…'}
+          </p>
         </div>
         <Link href="/admin/cours/new" className="a-btn a-btn-primary">
           Nouveau cours
         </Link>
       </div>
 
-      {programs.length === 0 ? (
+      {error && (
+        <div className="a-alert a-alert-error" role="alert">
+          {error}
+        </div>
+      )}
+
+      {programs && programs.length === 0 ? (
         <div className="a-card a-empty">
           Aucun cours pour l’instant.{' '}
           <Link href="/admin/cours/new">Ajouter le premier</Link>.
         </div>
-      ) : (
+      ) : programs ? (
         <div className="a-tableWrap">
           <table className="a-table">
             <thead>
@@ -44,9 +62,9 @@ export default async function AdminProgramsPage() {
             </thead>
             <tbody>
               {programs.map((p) => (
-                <tr key={String(p._id)}>
+                <tr key={p.id}>
                   <td>
-                    <Link href={`/admin/cours/${p._id}`} className="a-rowTitle">
+                    <Link href={`/admin/cours/edit?id=${p.id}`} className="a-rowTitle">
                       {p.name}
                     </Link>
                     <span className="a-rowMeta">/{p.slug}</span>
@@ -58,7 +76,7 @@ export default async function AdminProgramsPage() {
                     </span>
                   </td>
                   <td>
-                    <Link href={`/admin/cours/${p._id}`} className="a-btn">
+                    <Link href={`/admin/cours/edit?id=${p.id}`} className="a-btn">
                       Modifier
                     </Link>
                   </td>
@@ -67,7 +85,7 @@ export default async function AdminProgramsPage() {
             </tbody>
           </table>
         </div>
-      )}
+      ) : null}
     </AdminShell>
   );
 }

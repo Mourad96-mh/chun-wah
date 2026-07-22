@@ -107,6 +107,16 @@ export const adminApi = {
   deleteBook: (id: string) =>
     request(`/api/books/${id}`, { method: 'DELETE', auth: true }),
 
+  // --- Cours / programmes ----------------------------------------------------
+  listPrograms: () => request('/api/programs/admin/all', { auth: true }),
+  getProgram: (id: string) => request(`/api/programs/admin/${id}`, { auth: true }),
+  createProgram: (b: unknown) =>
+    request('/api/programs', { method: 'POST', body: b, auth: true }),
+  updateProgram: (id: string, b: unknown) =>
+    request(`/api/programs/${id}`, { method: 'PUT', body: b, auth: true }),
+  deleteProgram: (id: string) =>
+    request(`/api/programs/${id}`, { method: 'DELETE', auth: true }),
+
   // --- Uploads (Cloudinary) --------------------------------------------------
   async upload(file: File, folder?: string) {
     const fd = new FormData();

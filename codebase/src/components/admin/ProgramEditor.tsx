@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { adminApi } from '@/lib/adminApi';
 import ImageField from './ImageField';
 
 export interface ProgramFormValues {
-  _id?: string;
+  id?: string;
   name: string;
   slug: string;
   order: number;
@@ -39,7 +40,7 @@ const EMPTY: ProgramFormValues = {
 
 export default function ProgramEditor({ initial }: { initial?: ProgramFormValues }) {
   const router = useRouter();
-  const isNew = !initial?._id;
+  const isNew = !initial?.id;
 
   const [values, setValues] = useState<ProgramFormValues>(initial ?? EMPTY);
   const [error, setError] = useState('');
@@ -58,36 +59,24 @@ export default function ProgramEditor({ initial }: { initial?: ProgramFormValues
     const payload = { ...values, status: status ?? values.status };
 
     try {
-      const res = await fetch(
-        isNew ? '/api/admin/programs' : `/api/admin/programs/${initial!._id}`,
-        {
-          method: isNew ? 'POST' : 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        },
-      );
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error ?? 'Enregistrement impossible.');
-        return;
-      }
+      // L'API (Express) renvoie directement le cours : { id, slug, status, … }.
+      const program = isNew
+        ? await adminApi.createProgram(payload)
+        : await adminApi.updateProgram(initial!.id!, payload);
 
       if (isNew) {
-        router.push(`/admin/cours/${data.program._id}`);
-        router.refresh();
+        router.push(`/admin/cours/edit?id=${program.id}`);
         return;
       }
 
-      setValues((v) => ({ ...v, status: data.program.status, slug: data.program.slug }));
+      setValues((v) => ({ ...v, status: program.status, slug: program.slug }));
       setNotice(
-        data.program.status === 'published'
+        program.status === 'published'
           ? 'Cours enregistré et publié — visible sur le site.'
           : 'Brouillon enregistré — invisible sur le site public.',
       );
-      router.refresh();
-    } catch {
-      setError('Erreur réseau. Réessayez.');
+    } catch (err) {
+      setError((err as Error).message || 'Enregistrement impossible.');
     } finally {
       setBusy(false);
     }
@@ -98,14 +87,10 @@ export default function ProgramEditor({ initial }: { initial?: ProgramFormValues
 
     setBusy(true);
     try {
-      const res = await fetch(`/api/admin/programs/${initial!._id}`, { method: 'DELETE' });
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error ?? 'Suppression impossible.');
-        return;
-      }
+      await adminApi.deleteProgram(initial!.id!);
       router.push('/admin/cours');
-      router.refresh();
+    } catch (err) {
+      setError((err as Error).message || 'Suppression impossible.');
     } finally {
       setBusy(false);
     }
@@ -273,6 +258,7 @@ export default function ProgramEditor({ initial }: { initial?: ProgramFormValues
           hint="format paysage, ~1200×800"
           value={values.image}
           onChange={(url) => set('image', url)}
+          folder="chunwah/cours"
         />
 
         <div className="a-field">

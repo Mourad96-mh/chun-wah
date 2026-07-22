@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import authRoutes from './routes/auth.js';
 import articleRoutes from './routes/articles.js';
 import bookRoutes from './routes/books.js';
+import programRoutes from './routes/programs.js';
 import uploadRoutes from './routes/uploads.js';
 
 const app = express();
@@ -22,6 +23,7 @@ app.get('/', (req, res) => res.json({ ok: true, service: 'chunwah-api' }));
 app.use('/api/auth', authRoutes);
 app.use('/api/articles', articleRoutes);
 app.use('/api/books', bookRoutes);
+app.use('/api/programs', programRoutes);
 app.use('/api/uploads', uploadRoutes);
 
 // 404

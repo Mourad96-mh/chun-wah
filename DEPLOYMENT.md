@@ -81,15 +81,23 @@ qu'Apache/LiteSpeed sert pour `/route/`.
 
 Le pattern est établi sur **auth + articles**. Répliquer pour chaque ressource :
 
-- [ ] **Livres** — modèle `Book`, routes `/api/books`, admin `livres/*`, page `[locale]/livres`.
-- [ ] **Cours** — modèle `Program`, routes `/api/programs`, admin `cours/*`, pages `[locale]/cours*`.
+- [x] **Articles / blog** — modèle `Article`, routes `/api/articles`, admin `articles/*`, pages `[locale]/blog*`.
+- [x] **Livres** — modèle `Book`, routes `/api/books`, admin `livres/*`, page `[locale]/livres`.
+- [x] **Cours** — modèle `Program`, routes `/api/programs`, admin `cours/*`, pages `[locale]/cours*`
+      (seam `src/lib/programs.ts` inchangé pour home/footer/horaires/sitemap).
 - [ ] **Parcours** — modèle `Roadmap`, routes `/api/roadmap`, admin `parcours`.
 - [ ] **Vidéos** — modèle `Video`, routes `/api/videos`, admin `videos/*`.
-- [ ] **Médias** — modèle `Media`, routes `/api/media`, admin `medias`.
-- [ ] **Réglages** — modèle `Settings`, routes `/api/settings`, admin `reglages`.
+- [ ] **Médias** — modèle `Media`, routes `/api/media`, admin `medias`. **Débloque** les noms
+      d'instructeurs (`src/lib/instructors.ts` → `src/lib/media.ts`) sur les pages cours/horaires.
+- [ ] **Réglages** — modèle `Settings`, routes `/api/settings`, admin `reglages`. **Débloque**
+      le `[locale]/layout.tsx` (`getPublicSettings`) dont dépend CHAQUE page → gate du build export.
 - [ ] Convertir les pages admin restantes en **composants client** (`adminApi` + Bearer)
       et retirer `src/middleware.ts` (l'auth admin devient client-side).
-- [ ] Retirer `revalidate`/`setRequestLocale` incompatibles export ; baker chaque
+- [ ] Retirer `revalidate` / lectures Mongo restantes incompatibles export ; baker chaque
       collection via `scripts/sync-content.mjs`.
 - [ ] Supprimer `src/app/api/*`, les `src/models/*`, `src/lib/{auth,db}.ts` du frontend,
       et purger `mongoose/bcryptjs/jose/cloudinary` de `codebase/package.json`.
+
+> **Note sur le build export** : tant que **Réglages** (layout partagé) et **Médias**
+> (instructeurs) ne sont pas portés, `next build` reste rouge même pour les ressources
+> déjà migrées — leur *donnée* est prête, mais le layout commun lit encore Mongo.

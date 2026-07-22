@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Chun Wah">
+  <rect width="512" height="512" rx="96" fill="#0e0f11"/>
+  <rect x="28" y="28" width="456" height="456" rx="72" fill="none" stroke="#c2352b" stroke-width="20"/>
+  <text x="256" y="256" fill="#f5f3f0" font-size="300" font-family="'Noto Sans CJK SC','Microsoft YaHei','SimSun','MS Gothic',sans-serif" text-anchor="middle" dominant-baseline="central">詠</text>
+</svg>

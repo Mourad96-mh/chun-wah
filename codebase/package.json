@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "icons": "node scripts/make-icons.mjs",
     "shoot": "node shoot.mjs",
     "pdf": "node make-pdf.mjs client-screenshots Chun-Wah-maquette-desktop.pdf && node make-pdf.mjs client-screenshots-mobile Chun-Wah-maquette-mobile.pdf",
     "shoot:whatsapp": "node make-whatsapp.mjs client-screenshots whatsapp/desktop && node make-whatsapp.mjs client-screenshots-mobile whatsapp/mobile"

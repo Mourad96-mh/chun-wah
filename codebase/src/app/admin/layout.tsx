@@ -5,6 +5,13 @@ export const metadata: Metadata = {
   title: 'Administration — Chun Wah',
   // The admin must never be indexed, whatever the public site does.
   robots: { index: false, follow: false },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 /**

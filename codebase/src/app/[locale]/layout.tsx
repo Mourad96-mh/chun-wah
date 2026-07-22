@@ -57,6 +57,17 @@ export async function generateMetadata({
       default: t('metaTitle', { city: site.address.city, name: site.name }),
       template: `%s | ${site.name}`,
     },
+    // Icônes servies depuis public/ (et non app/icon.*) : le loader de routes
+    // metadata de Next bute sur les chemins contenant une espace, comme ici
+    // « …/Bureau/CHUN WAH » — même raison que pour sitemap.xml et robots.txt.
+    icons: {
+      icon: [
+        { url: '/favicon.ico', sizes: 'any' },
+        { url: '/favicon.svg', type: 'image/svg+xml' },
+      ],
+      apple: '/apple-touch-icon.png',
+    },
+    manifest: '/site.webmanifest',
   };
 }
 

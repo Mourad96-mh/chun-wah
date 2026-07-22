@@ -5,6 +5,7 @@ import { site } from '@/data/site';
 import { pick } from '@/lib/localized';
 import { getPublicSettings } from '@/lib/settings';
 import { getPrograms } from '@/lib/programs';
+import FooterNav from './FooterNav';
 import styles from './Footer.module.css';
 
 type NavKey = 'home' | 'programs' | 'roadmap' | 'instructors' | 'schedule' | 'blog' | 'books' | 'contact';
@@ -71,16 +72,7 @@ export default async function Footer() {
             <h2 id="footer-nav" className={styles.colTitle}>
               {t('navTitle')}
             </h2>
-            <ul className={styles.list}>
-              {navItems
-                .filter((item) => !item.frOnly || locale === 'fr')
-                .filter((item) => !hidden.includes(item.key))
-                .map((item) => (
-                  <li key={item.href}>
-                    <Link href={item.href}>{tn(item.key)}</Link>
-                  </li>
-                ))}
-            </ul>
+            <FooterNav items={navItems} initialHidden={hiddenNav} />
           </nav>
 
           {!programsHidden && (

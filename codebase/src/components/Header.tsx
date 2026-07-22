@@ -6,6 +6,7 @@ import { Link, usePathname } from '@/i18n/navigation';
 import type { StaticPathname } from '@/i18n/routing';
 import { site } from '@/data/site';
 import type { NavKey } from '@/lib/nav';
+import { useHiddenNav } from '@/lib/useHiddenNav';
 import LanguageSwitcher from './LanguageSwitcher';
 import styles from './Header.module.css';
 
@@ -26,10 +27,15 @@ export default function Header({ hiddenNav = [] }: { hiddenNav?: NavKey[] }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // Two filters: `frOnly` hides FR-only links on the English site; `hiddenNav`
+  // Le snapshot baké sert de valeur de départ, puis on suit l'API en direct :
+  // sans ça, masquer un lien depuis /admin n'aurait aucun effet avant un
+  // nouveau déploiement du site statique.
+  const hidden = useHiddenNav(hiddenNav);
+
+  // Two filters: `frOnly` hides FR-only links on the English site; `hidden`
   // hides whatever the client has switched off from the admin (see lib/nav.ts).
   const visibleNav = navItems.filter(
-    (item) => (!item.frOnly || locale === 'fr') && !hiddenNav.includes(item.key),
+    (item) => (!item.frOnly || locale === 'fr') && !hidden.includes(item.key),
   );
 
   // Close the panel whenever the route changes.

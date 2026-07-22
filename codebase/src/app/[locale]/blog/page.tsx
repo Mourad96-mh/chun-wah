@@ -6,6 +6,7 @@ import { site } from '@/data/site';
 import { buildMetadata } from '@/lib/seo';
 import { readingTime } from '@/lib/markdown';
 import { articles } from '@/lib/articles';
+import { assertNavVisible } from '@/lib/settings';
 import PageHeader from '@/components/PageHeader';
 import styles from './blog.module.css';
 
@@ -44,6 +45,7 @@ export default async function BlogIndexPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  await assertNavVisible('blog');
 
   const t = await getTranslations('blog');
   const tn = await getTranslations('nav');

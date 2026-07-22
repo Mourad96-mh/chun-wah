@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation';
 import { locales, type Locale } from '@/i18n/routing';
 import { site } from '@/data/site';
 import { getProgramBySlug, getPublishedProgramSlugs } from '@/lib/programs';
+import { assertNavVisible } from '@/lib/settings';
 import { getInstructorMap } from '@/lib/instructors';
 import { schedule } from '@/data/schedule';
 import { buildMetadata, absoluteUrl } from '@/lib/seo';
@@ -43,6 +44,7 @@ export async function generateMetadata({
 export default async function ProgramPage({ params }: { params: Promise<Params> }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+  await assertNavVisible('programs');
 
   const program = await getProgramBySlug(slug);
   if (!program) notFound();

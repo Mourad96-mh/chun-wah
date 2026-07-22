@@ -4,6 +4,7 @@ import type { Locale } from '@/i18n/routing';
 import { site } from '@/data/site';
 import { buildMetadata } from '@/lib/seo';
 import { getPrograms } from '@/lib/programs';
+import { assertNavVisible } from '@/lib/settings';
 import PageHeader from '@/components/PageHeader';
 import ProgramCard from '@/components/ProgramCard';
 import styles from '../page.module.css';
@@ -31,6 +32,7 @@ export default async function ProgramsPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  await assertNavVisible('programs');
 
   const t = await getTranslations('programs');
   const tn = await getTranslations('nav');

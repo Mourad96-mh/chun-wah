@@ -8,6 +8,7 @@ import { absoluteUrl } from '@/lib/seo';
 import { renderMarkdown, readingTime } from '@/lib/markdown';
 import { breadcrumbSchema } from '@/lib/schema';
 import { articles, getArticleCard, articleSlugs } from '@/lib/articles';
+import { assertNavVisible } from '@/lib/settings';
 import PageHeader from '@/components/PageHeader';
 import JsonLd from '@/components/JsonLd';
 import styles from '../blog.module.css';
@@ -66,6 +67,7 @@ const dateFmt = new Intl.DateTimeFormat('fr-FR', {
 export default async function ArticlePage({ params }: { params: Promise<Params> }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+  await assertNavVisible('blog');
 
   const article = getArticleCard(slug);
   if (!article) notFound();

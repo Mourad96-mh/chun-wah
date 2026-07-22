@@ -4,6 +4,7 @@ import type { Locale } from '@/i18n/routing';
 import { site } from '@/data/site';
 import { buildMetadata } from '@/lib/seo';
 import { books, type Book } from '@/lib/books';
+import { assertNavVisible } from '@/lib/settings';
 import PageHeader from '@/components/PageHeader';
 import styles from './books.module.css';
 
@@ -35,6 +36,7 @@ export default async function BooksPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  await assertNavVisible('books');
 
   const t = await getTranslations('books');
   const tn = await getTranslations('nav');

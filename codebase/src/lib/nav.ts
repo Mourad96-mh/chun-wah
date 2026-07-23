@@ -9,7 +9,8 @@
 export const TOGGLEABLE_NAV = [
   { key: 'programs', label: 'Cours' },
   { key: 'roadmap', label: 'Parcours' },
-  { key: 'instructors', label: 'Instructeurs' },
+  { key: 'team', label: 'Équipe' },
+  { key: 'events', label: 'Événements' },
   { key: 'schedule', label: 'Horaires' },
   { key: 'blog', label: 'Blog' },
   { key: 'books', label: 'Livres' },

@@ -32,9 +32,13 @@ export const routing = defineRouting({
       fr: '/parcours',
       en: '/parcours',
     },
-    '/instructeurs': {
-      fr: '/instructeurs',
-      en: '/instructeurs',
+    '/equipe': {
+      fr: '/equipe',
+      en: '/equipe',
+    },
+    '/evenements': {
+      fr: '/evenements',
+      en: '/evenements',
     },
     '/horaires': {
       fr: '/horaires',

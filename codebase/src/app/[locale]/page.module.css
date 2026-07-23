@@ -1,62 +1,6 @@
-/* --- Hero ----------------------------------------------------------------- */
-
-.hero {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: clamp(520px, 78vh, 760px);
-  background: var(--ink);
-  color: var(--paper);
-  overflow: hidden;
-}
-
-.heroMedia {
-  position: absolute;
-  inset: 0;
-  opacity: 0.4;
-}
-
-.heroOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    100deg,
-    rgba(14, 15, 17, 0.95) 0%,
-    rgba(14, 15, 17, 0.8) 45%,
-    rgba(14, 15, 17, 0.45) 100%
-  );
-}
-
-.heroInner {
-  position: relative;
-  z-index: 1;
-  padding-block: 4rem;
-}
-
-.heroContent {
-  max-width: 42rem;
-}
-
-.heroTitle {
-  margin-bottom: 1.25rem;
-}
-
-.heroTitle span {
-  color: var(--accent);
-}
-
-.heroSubtitle {
-  margin-bottom: 2rem;
-  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
-  color: var(--muted-light);
-  max-width: 46ch;
-}
-
-.heroActions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
-}
+/* --- Hero ------------------------------------------------------------------
+   Les styles du hero vivent désormais dans src/components/Hero.module.css
+   (le hero est un composant client autonome — diaporama + fallback image). */
 
 /* --- Stats bar ------------------------------------------------------------ */
 

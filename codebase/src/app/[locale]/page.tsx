@@ -9,7 +9,9 @@ import { schedule, validateSchedule } from '@/data/schedule';
 import { buildMetadata } from '@/lib/seo';
 import { getPublicSettings } from '@/lib/settings';
 import { getMediaMap } from '@/lib/media';
+import { getBanners } from '@/lib/banners';
 import { faqSchema } from '@/lib/schema';
+import Hero from '@/components/Hero';
 import LivePhoto from '@/components/LivePhoto';
 import ProgramsList from '@/components/ProgramsList';
 import ScheduleTable from '@/components/ScheduleTable';
@@ -17,6 +19,7 @@ import Testimonials from '@/components/Testimonials';
 import Faq from '@/components/Faq';
 import JsonLd from '@/components/JsonLd';
 import VideoShowcase from '@/components/VideoShowcase';
+import HistoryTimeline from '@/components/HistoryTimeline';
 import styles from './page.module.css';
 
 
@@ -58,10 +61,12 @@ export default async function HomePage({
   const hidden = hiddenNav as string[];
   const programsHidden = hidden.includes('programs');
   const scheduleHidden = hidden.includes('schedule');
-  const instructorsHidden = hidden.includes('instructors');
+  const teamHidden = hidden.includes('team');
 
   // Client-uploaded images (hero, à propos); blank slots fall back to placeholders.
   const media = await getMediaMap();
+  // Diapositives du hero (gérées dans /admin/bannieres) ; vide → hero image unique.
+  const banners = getBanners();
   // Instructors with any admin name overrides (used by the schedule preview).
   const instructors = await getInstructors();
   // Courses from the DB (admin-managed).
@@ -69,42 +74,22 @@ export default async function HomePage({
 
   return (
     <>
-      {/* --- Hero --- */}
-      <section className={styles.hero}>
-        <div className={styles.heroMedia}>
-          <LivePhoto
-            slot="hero"
-            initialMedia={media}
-            src="/images/hero.jpg"
-            fallbackAlt={
-              locale === 'fr'
-                ? "Vue large de la salle d'entraînement pendant un cours"
-                : 'Wide shot of the training hall during a class'
-            }
-            priority
-            sizes="100vw"
-          />
-        </div>
-        <div className={styles.heroOverlay} />
-
-        <div className={`wrap ${styles.heroInner}`}>
-          <div className={styles.heroContent}>
-            <span className="kicker">{t('heroKicker', { city: site.address.city })}</span>
-            <h1 className={styles.heroTitle}>{t('heroTitle')}</h1>
-            <p className={styles.heroSubtitle}>{t('heroSubtitle')}</p>
-            <div className={styles.heroActions}>
-              <Link href="/cours-essai-gratuit" className="btn btn-primary">
-                {t('heroPrimaryCta')}
-              </Link>
-              {!scheduleHidden && (
-                <Link href="/horaires" className="btn btn-outline">
-                  {t('heroSecondaryCta')}
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* --- Hero (diaporama /admin/bannieres, ou image unique en fallback) --- */}
+      <Hero
+        initialBanners={banners}
+        locale={locale}
+        media={media}
+        kicker={t('heroKicker', { city: site.address.city })}
+        fallbackTitle={t('heroTitle')}
+        fallbackSubtitle={t('heroSubtitle')}
+        fallbackAlt={
+          locale === 'fr'
+            ? "Vue large de la salle d'entraînement pendant un cours"
+            : 'Wide shot of the training hall during a class'
+        }
+        primaryCtaLabel={t('heroPrimaryCta')}
+        secondaryCtaLabel={scheduleHidden ? null : t('heroSecondaryCta')}
+      />
 
       {/* --- Stats --- */}
       <section className={styles.stats} aria-label={t('aboutKicker')}>
@@ -152,8 +137,8 @@ export default async function HomePage({
               <span className="kicker">{t('aboutKicker')}</span>
               <h2>{t('aboutTitle')}</h2>
               <p>{t('aboutBody')}</p>
-              {!instructorsHidden && (
-                <Link href="/instructeurs" className="btn btn-outline">
+              {!teamHidden && (
+                <Link href="/equipe" className="btn btn-outline">
                   {tc('learnMore')}
                 </Link>
               )}
@@ -161,6 +146,9 @@ export default async function HomePage({
           </div>
         </div>
       </section>
+
+      {/* --- Our history timeline (renders only if milestones exist) --- */}
+      <HistoryTimeline locale={locale} />
 
       {/* --- Video showcase (renders only if published videos exist) --- */}
       <VideoShowcase locale={locale} />

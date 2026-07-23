@@ -3,27 +3,32 @@ import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 
 /**
- * Illustration du parcours de l'élève affichée sur /parcours, modélisée en
- * singleton (un document `key: 'main'`, comme Settings et Media) : il n'y a
- * qu'un seul schéma de parcours pour toute l'académie.
+ * Étape du parcours de l'élève, affichée sur /parcours comme une frise verticale
+ * (image + titre + description, bilingue). Gérée depuis /admin/parcours — même
+ * patron que les bannières (une étape = un document, ordonnées par `order`).
  *
- * `imageUrl` est le dessin affiché sur la page ; `fileUrl` une version
- * téléchargeable facultative (PDF ou export haute résolution). `published`
- * garde le tout invisible tant que le client n'est pas prêt.
+ * Note migration : l'ancien parcours était un singleton (une seule illustration
+ * ou PDF). Ce modèle le remplace par une COLLECTION d'étapes ; l'ancienne
+ * collection `roadmaps` (document key:'main') n'est plus lue.
  */
-const RoadmapSchema = new Schema(
+const RoadmapStepSchema = new Schema(
   {
-    key: { type: String, default: 'main', unique: true },
-    imageUrl: { type: String, default: '', trim: true },
-    /** Texte alternatif — accessibilité et SEO du dessin. */
-    imageAlt: { type: String, default: '', trim: true, maxlength: 300 },
-    /** Fichier téléchargeable facultatif (PDF / image haute résolution). */
-    fileUrl: { type: String, default: '', trim: true },
-    /** Légende facultative affichée sous le dessin. */
-    note: { type: String, default: '', trim: true, maxlength: 600 },
-    published: { type: Boolean, default: false },
+    // Image de l'étape (téléversée depuis l'admin).
+    image: { type: String, required: true, trim: true },
+    // Titre superposé — bilingue.
+    titleFr: { type: String, default: '', trim: true, maxlength: 200 },
+    titleEn: { type: String, default: '', trim: true, maxlength: 200 },
+    // Description de l'étape — bilingue.
+    descriptionFr: { type: String, default: '', trim: true, maxlength: 1000 },
+    descriptionEn: { type: String, default: '', trim: true, maxlength: 1000 },
+    // Ordre d'affichage dans la frise. Plus petit = plus tôt.
+    order: { type: Number, default: 0 },
+    // Une étape inactive reste en base mais disparaît de la frise.
+    active: { type: Boolean, default: true },
   },
   { timestamps: true }
 );
 
-export default mongoose.models.Roadmap || model('Roadmap', RoadmapSchema);
+RoadmapStepSchema.index({ order: 1, createdAt: 1 });
+
+export default mongoose.models.RoadmapStep || model('RoadmapStep', RoadmapStepSchema);

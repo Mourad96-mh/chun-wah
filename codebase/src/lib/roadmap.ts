@@ -1,53 +1,67 @@
 // ---------------------------------------------------------------------------
-// Chun Wah — parcours de l'élève (singleton) + snapshot baké.
+// Chun Wah — parcours de l'élève : COLLECTION d'étapes + snapshot baké.
 //
 // CLIENT-SAFE : n'importe jamais Mongoose ni de code serveur. La donnée vient du
 // snapshot de build (src/lib/roadmap.data.json), synchronisé depuis l'API
-// Express par scripts/sync-content.mjs — plus de Mongo ni d'ISR, compatible
-// export statique. L'endpoint public ne renvoie le parcours que s'il est publié :
-// un brouillon arrive donc ici comme un objet vide, et la page affiche son état
-// « bientôt disponible ».
+// Express par scripts/sync-content.mjs — compatible export statique, rafraîchi
+// en direct côté client (voir useLiveData / RoadmapTimeline).
+//
+// Chaque étape = une image + un titre + une description, bilingue (même patron
+// que les bannières). L'endpoint public ne renvoie que les étapes ACTIVES.
 // ---------------------------------------------------------------------------
 
 import rawRoadmap from '@/lib/roadmap.data.json';
+import type { Localized } from '@/data/types';
 
-export type Roadmap = {
-  imageUrl: string;
-  imageAlt: string;
-  fileUrl: string;
-  note: string;
-  published: boolean;
-};
+/** Étape telle que stockée dans le snapshot / renvoyée par l'API. */
+interface RoadmapStepLean {
+  _id: string;
+  image: string;
+  titleFr?: string;
+  titleEn?: string;
+  descriptionFr?: string;
+  descriptionEn?: string;
+  order?: number;
+  active?: boolean;
+}
 
-type RawRoadmap = Partial<Record<keyof Roadmap, unknown>>;
+/** Étape consommée par le site (texte replié en Localized). */
+export interface RoadmapStep {
+  id: string;
+  image: string;
+  title: Localized;
+  description: Localized;
+}
 
-/** Normalise un objet brut (snapshot ou réponse API) en Roadmap. */
-export function normalizeRoadmap(raw: unknown): Roadmap {
-  const r = (raw ?? {}) as RawRoadmap;
+function toStep(doc: RoadmapStepLean): RoadmapStep {
   return {
-    imageUrl: String(r.imageUrl ?? '').trim(),
-    imageAlt: String(r.imageAlt ?? '').trim(),
-    fileUrl: String(r.fileUrl ?? '').trim(),
-    note: String(r.note ?? '').trim(),
-    published: Boolean(r.published),
+    id: doc._id,
+    image: doc.image ?? '',
+    title: { fr: doc.titleFr ?? '', en: doc.titleEn ?? '' },
+    description: { fr: doc.descriptionFr ?? '', en: doc.descriptionEn ?? '' },
   };
 }
 
-/** Le parcours publié, lu par la page /parcours (/roadmap en anglais). */
-export const roadmap: Roadmap = normalizeRoadmap(rawRoadmap);
+function sortAndMap(docs: RoadmapStepLean[]): RoadmapStep[] {
+  return [...docs]
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    .map(toStep)
+    .filter((s) => s.image);
+}
 
-/**
- * Parcours lu EN DIRECT depuis l'API (côté client) : un schéma remplacé dans
- * /admin/parcours apparaît sans redéployer le site statique.
- */
-export async function fetchRoadmap(): Promise<Roadmap> {
+/** Étapes bakées au build (déjà filtrées « actives » par l'API). */
+const bakedSteps: RoadmapStep[] = sortAndMap(rawRoadmap as RoadmapStepLean[]);
+
+/** Étapes du parcours, dans l'ordre d'affichage (snapshot baké). */
+export function getRoadmapSteps(): RoadmapStep[] {
+  return bakedSteps;
+}
+
+/** Étapes lues EN DIRECT depuis l'API (même shape que le snapshot). */
+export async function fetchRoadmapSteps(): Promise<RoadmapStep[]> {
   const api = process.env.NEXT_PUBLIC_API_URL || '';
   const res = await fetch(`${api}/api/roadmap`);
   if (!res.ok) throw new Error(`GET /api/roadmap → ${res.status}`);
-  return normalizeRoadmap(await res.json());
-}
-
-/** Vrai quand il y a réellement quelque chose à afficher. */
-export function hasRoadmapContent(r: Roadmap = roadmap): boolean {
-  return Boolean(r.imageUrl || r.fileUrl);
+  const raw = (await res.json()) as RoadmapStepLean[];
+  return sortAndMap(raw);
 }

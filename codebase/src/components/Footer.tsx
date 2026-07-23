@@ -8,14 +8,15 @@ import { getPrograms } from '@/lib/programs';
 import FooterNav from './FooterNav';
 import styles from './Footer.module.css';
 
-type NavKey = 'home' | 'programs' | 'roadmap' | 'instructors' | 'schedule' | 'blog' | 'books' | 'contact';
+type NavKey = 'home' | 'programs' | 'roadmap' | 'team' | 'events' | 'schedule' | 'blog' | 'books' | 'contact';
 
 /** `frOnly` items are hidden in English — the blog and books exist in FR only. */
 const navItems: { href: StaticPathname; key: NavKey; frOnly?: boolean }[] = [
   { href: '/', key: 'home' },
   { href: '/cours', key: 'programs' },
   { href: '/parcours', key: 'roadmap' },
-  { href: '/instructeurs', key: 'instructors' },
+  { href: '/equipe', key: 'team' },
+  { href: '/evenements', key: 'events' },
   { href: '/horaires', key: 'schedule' },
   { href: '/blog', key: 'blog', frOnly: true },
   { href: '/livres', key: 'books', frOnly: true },

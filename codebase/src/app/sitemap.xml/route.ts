@@ -60,7 +60,8 @@ export async function GET() {
     { href: '/parcours', priority: 0.8, navKey: 'roadmap' },
     { href: '/cours-essai-gratuit', priority: 0.9 },
     { href: '/horaires', priority: 0.8, navKey: 'schedule' },
-    { href: '/instructeurs', priority: 0.7, navKey: 'instructors' },
+    { href: '/equipe', priority: 0.7, navKey: 'team' },
+    { href: '/evenements', priority: 0.7, navKey: 'events' },
     { href: '/contact', priority: 0.7, navKey: 'contact' },
     ...programs.map((p) => ({
       href: { pathname: '/cours/[slug]' as const, params: { slug: p.slug } },

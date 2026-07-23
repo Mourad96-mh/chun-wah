@@ -1,0 +1,156 @@
+/* --- Hero ----------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: clamp(520px, 78vh, 760px);
+  background: var(--ink);
+  color: var(--paper);
+  overflow: hidden;
+}
+
+.heroMedia {
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+}
+
+/* Diapositives du diaporama : superposées, révélées par fondu-enchaîné. */
+.slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 900ms ease-in-out;
+}
+
+.slideActive {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide {
+    transition: none;
+  }
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(14, 15, 17, 0.95) 0%,
+    rgba(14, 15, 17, 0.8) 45%,
+    rgba(14, 15, 17, 0.45) 100%
+  );
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  padding-block: 4rem;
+}
+
+.heroContent {
+  max-width: 42rem;
+}
+
+.heroTitle {
+  margin-bottom: 1.25rem;
+}
+
+.heroTitle span {
+  color: var(--accent);
+}
+
+.heroSubtitle {
+  margin-bottom: 2rem;
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  color: var(--muted-light);
+  max-width: 46ch;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+/* --- Diaporama : flèches et pastilles ------------------------------------- */
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  transform: translateY(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(14, 15, 17, 0.4);
+  color: var(--paper);
+  cursor: pointer;
+  transition: background 140ms, border-color 140ms;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.arrow:hover {
+  background: rgba(14, 15, 17, 0.7);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.arrowPrev {
+  left: 1rem;
+}
+
+.arrowNext {
+  right: 1rem;
+}
+
+.dots {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  gap: 0.5rem;
+  transform: translateX(-50%);
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: background 140ms, transform 140ms;
+}
+
+.dot:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.dotActive {
+  background: var(--accent);
+  transform: scale(1.25);
+}
+
+/* Sur petits écrans, les flèches se rapprochent des bords. */
+@media (max-width: 640px) {
+  .arrowPrev {
+    left: 0.4rem;
+  }
+
+  .arrowNext {
+    right: 0.4rem;
+  }
+}

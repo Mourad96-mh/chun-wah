@@ -1,0 +1,105 @@
+/* --- Events list ---------------------------------------------------------- */
+
+.list {
+  display: grid;
+  gap: 2rem;
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 1fr;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+/* Badge date, coin haut-gauche de l'image. */
+.badge {
+  position: absolute;
+  top: 0.9rem;
+  left: 0.9rem;
+  display: grid;
+  place-items: center;
+  min-width: 58px;
+  padding: 0.5rem 0.4rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  line-height: 1;
+}
+
+.badgeDay {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.badgeMonth {
+  margin-top: 0.15rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.body {
+  padding: 1.5rem;
+}
+
+.date {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.title {
+  margin: 0 0 0.5rem;
+  font-size: 1.35rem;
+}
+
+.meta {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.text {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Sur écran large, image à gauche, texte à droite. */
+@media (min-width: 760px) {
+  .card {
+    grid-template-columns: 340px 1fr;
+    align-items: stretch;
+  }
+
+  .media {
+    aspect-ratio: auto;
+    height: 100%;
+  }
+}

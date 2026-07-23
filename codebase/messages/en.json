@@ -2,7 +2,8 @@
   "nav": {
     "home": "Home",
     "programs": "Programs",
-    "instructors": "Instructors",
+    "team": "Team",
+    "events": "Events",
     "schedule": "Schedule",
     "roadmap": "Roadmap",
     "contact": "Contact",
@@ -44,6 +45,8 @@
     "aboutKicker": "The academy",
     "aboutTitle": "A gym, not a showroom",
     "aboutBody": "Chun Wah is a neighbourhood academy built on one idea: a martial art is only worth something if it works under pressure. We teach principles before flourishes, everyone progresses at their own pace, and you are welcome whether you are 8 or 58. Beginners welcome all year round.",
+    "historyKicker": "Since day one",
+    "historyTitle": "Our story",
     "videosKicker": "In motion",
     "videosTitle": "The academy in motion",
     "videosIntro": "A few clips from our classes, demos and events — get a feel for the room before you step in.",
@@ -80,12 +83,19 @@
     "detailNoSlots": "The slots for this class are being updated — contact us for the current times.",
     "detailCta": "Try this class for free"
   },
-  "instructors": {
-    "metaTitle": "Our instructors | {name}",
-    "metaDescription": "Meet the instructor team at {name} in {city}: background, grades and specialities.",
-    "title": "Our instructors",
+  "team": {
+    "metaTitle": "Our team | {name}",
+    "metaDescription": "Meet the team at {name} in {city}: instructors, grades and specialities.",
+    "title": "Our team",
     "intro": "A trained, qualified team — and always on the mat with you.",
-    "credentials": "Background & qualifications"
+    "empty": "The team will be introduced here soon."
+  },
+  "events": {
+    "metaTitle": "Events | {name}",
+    "metaDescription": "Seminars, competitions and grading days at {name}, {city}. The academy's upcoming dates.",
+    "title": "Events",
+    "intro": "Seminars, competitions, grading days and workshops: the academy's upcoming dates.",
+    "empty": "No upcoming events right now. Check back soon!"
   },
   "schedule": {
     "metaTitle": "Class schedule | {name}",

@@ -1,0 +1,109 @@
+/* --- Team grid ------------------------------------------------------------ */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+}
+
+/* Barre de liens sociaux : masquée, glisse à l'apparition au survol de la carte. */
+.socials {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.75rem;
+  background: linear-gradient(to top, rgba(14, 15, 17, 0.85), transparent);
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+.card:hover .socials,
+.card:focus-within .socials {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.social {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: background var(--transition), color var(--transition);
+}
+
+.social:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.body {
+  padding: 1.25rem;
+}
+
+.name {
+  margin: 0 0 0.3rem;
+  font-size: 1.2rem;
+}
+
+.role {
+  display: block;
+  margin-bottom: 0.9rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.bio {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Sur mobile, une seule colonne suffit et l'image ne doit pas être trop haute. */
+@media (max-width: 480px) {
+  .media {
+    aspect-ratio: 4 / 3;
+  }
+
+  /* Liens sociaux toujours visibles (pas de survol sur tactile). */
+  .socials {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

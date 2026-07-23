@@ -1,0 +1,146 @@
+/* --- Section head (aligné sur les autres sections d'accueil) -------------- */
+
+.head {
+  max-width: 46rem;
+  margin: 0 auto 2.75rem;
+  text-align: center;
+}
+
+/* --- Vertical tree -------------------------------------------------------- */
+
+.tree {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 44rem;
+}
+
+.node {
+  position: relative;
+  padding-left: 2.5rem;
+  padding-bottom: 0.5rem;
+}
+
+/* Branche verticale reliant les nœuds. */
+.node:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 1.4rem;
+  bottom: -0.5rem;
+  width: 0;
+  border-left: 2px dashed var(--accent);
+  opacity: 0.4;
+}
+
+/* --- Node header (bouton cliquable) --------------------------------------- */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  padding: 0.85rem 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+}
+
+.dot {
+  position: absolute;
+  left: 0;
+  top: 1.2rem;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--paper);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.year {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+.headTitle {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.chevron {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  transition: transform var(--transition);
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+  color: var(--accent);
+}
+
+/* --- Expandable panel ----------------------------------------------------- */
+
+.panel {
+  overflow: hidden;
+}
+
+.panelInner {
+  display: grid;
+  gap: 1.25rem;
+  padding: 0 0 1.5rem;
+}
+
+.media {
+  aspect-ratio: 16 / 9;
+  max-width: 22rem;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.text {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 60ch;
+}
+
+/* Panneau ouvert : petite apparition (respecte prefers-reduced-motion). */
+.panelOpen .panelInner {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panelOpen .panelInner {
+    animation: none;
+  }
+
+  .chevron {
+    transition: none;
+  }
+}

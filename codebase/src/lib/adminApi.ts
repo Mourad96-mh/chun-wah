@@ -97,6 +97,15 @@ export const adminApi = {
   deleteArticle: (id: string) =>
     request(`/api/articles/${id}`, { method: 'DELETE', auth: true }),
 
+  // --- Bannières (diaporama du hero) -----------------------------------------
+  listBanners: () => request('/api/banners/admin/all', { auth: true }),
+  createBanner: (b: unknown) =>
+    request('/api/banners', { method: 'POST', body: b, auth: true }),
+  updateBanner: (id: string, b: unknown) =>
+    request(`/api/banners/${id}`, { method: 'PUT', body: b, auth: true }),
+  deleteBanner: (id: string) =>
+    request(`/api/banners/${id}`, { method: 'DELETE', auth: true }),
+
   // --- Livres ----------------------------------------------------------------
   listBooks: () => request('/api/books/admin/all', { auth: true }),
   getBook: (id: string) => request(`/api/books/admin/${id}`, { auth: true }),
@@ -133,17 +142,53 @@ export const adminApi = {
   deleteVideo: (id: string) =>
     request(`/api/videos/${id}`, { method: 'DELETE', auth: true }),
 
-  // --- Parcours de l'élève ---------------------------------------------------
-  // Lecture via l'endpoint admin : il renvoie aussi le brouillon non publié.
-  getRoadmap: () => request('/api/roadmap/admin', { auth: true }),
-  updateRoadmap: (b: unknown) =>
-    request('/api/roadmap', { method: 'PUT', body: b, auth: true }),
+  // --- Parcours : textes de la page (titres, intro, CTA) ---------------------
+  // Lecture via l'endpoint public (pas besoin d'auth pour lire l'état courant).
+  getRoadmapPage: () => request('/api/roadmap-page'),
+  updateRoadmapPage: (b: unknown) =>
+    request('/api/roadmap-page', { method: 'PUT', body: b, auth: true }),
+
+  // --- Parcours de l'élève (étapes de la frise) ------------------------------
+  listRoadmapSteps: () => request('/api/roadmap/admin/all', { auth: true }),
+  createRoadmapStep: (b: unknown) =>
+    request('/api/roadmap', { method: 'POST', body: b, auth: true }),
+  updateRoadmapStep: (id: string, b: unknown) =>
+    request(`/api/roadmap/${id}`, { method: 'PUT', body: b, auth: true }),
+  deleteRoadmapStep: (id: string) =>
+    request(`/api/roadmap/${id}`, { method: 'DELETE', auth: true }),
 
   // --- Images du site (médias) -----------------------------------------------
   // Lecture via l'endpoint public (pas besoin d'auth pour lire l'état courant).
   getMedia: () => request('/api/media'),
   updateMedia: (items: unknown[]) =>
     request('/api/media', { method: 'PUT', body: { items }, auth: true }),
+
+  // --- Équipe ----------------------------------------------------------------
+  listTeam: () => request('/api/team/admin/all', { auth: true }),
+  createTeamMember: (b: unknown) =>
+    request('/api/team', { method: 'POST', body: b, auth: true }),
+  updateTeamMember: (id: string, b: unknown) =>
+    request(`/api/team/${id}`, { method: 'PUT', body: b, auth: true }),
+  deleteTeamMember: (id: string) =>
+    request(`/api/team/${id}`, { method: 'DELETE', auth: true }),
+
+  // --- Événements ------------------------------------------------------------
+  listEvents: () => request('/api/events/admin/all', { auth: true }),
+  createEvent: (b: unknown) =>
+    request('/api/events', { method: 'POST', body: b, auth: true }),
+  updateEvent: (id: string, b: unknown) =>
+    request(`/api/events/${id}`, { method: 'PUT', body: b, auth: true }),
+  deleteEvent: (id: string) =>
+    request(`/api/events/${id}`, { method: 'DELETE', auth: true }),
+
+  // --- Histoire (frise chronologique de l'accueil) ---------------------------
+  listMilestones: () => request('/api/history/admin/all', { auth: true }),
+  createMilestone: (b: unknown) =>
+    request('/api/history', { method: 'POST', body: b, auth: true }),
+  updateMilestone: (id: string, b: unknown) =>
+    request(`/api/history/${id}`, { method: 'PUT', body: b, auth: true }),
+  deleteMilestone: (id: string) =>
+    request(`/api/history/${id}`, { method: 'DELETE', auth: true }),
 
   // --- Uploads (Cloudinary) --------------------------------------------------
   async upload(file: File, folder?: string) {

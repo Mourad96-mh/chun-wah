@@ -2,7 +2,8 @@
   "nav": {
     "home": "Accueil",
     "programs": "Nos cours",
-    "instructors": "Instructeurs",
+    "team": "Équipe",
+    "events": "Événements",
     "schedule": "Horaires",
     "roadmap": "Parcours",
     "contact": "Contact",
@@ -44,6 +45,8 @@
     "aboutKicker": "L'académie",
     "aboutTitle": "Une salle, pas une vitrine",
     "aboutBody": "Chun Wah est une académie de quartier fondée sur une idée simple : un art martial ne vaut que s'il fonctionne sous pression. On y travaille les principes avant les figures, on y progresse à son rythme, et on y est accueilli qu'on ait 8 ou 58 ans. Débutants bienvenus toute l'année.",
+    "historyKicker": "Depuis nos débuts",
+    "historyTitle": "Notre histoire",
     "videosKicker": "En vidéo",
     "videosTitle": "L'académie en mouvement",
     "videosIntro": "Quelques images de nos cours, démonstrations et événements — pour ressentir l'ambiance avant de pousser la porte.",
@@ -80,12 +83,19 @@
     "detailNoSlots": "Les créneaux de ce cours sont en cours de mise à jour — contactez-nous pour les horaires actuels.",
     "detailCta": "Essayer ce cours gratuitement"
   },
-  "instructors": {
-    "metaTitle": "Nos instructeurs | {name}",
-    "metaDescription": "Rencontrez l'équipe d'instructeurs de {name} à {city} : parcours, grades et spécialités.",
-    "title": "Nos instructeurs",
+  "team": {
+    "metaTitle": "Notre équipe | {name}",
+    "metaDescription": "Rencontrez l'équipe de {name} à {city} : instructeurs, grades et spécialités.",
+    "title": "Notre équipe",
     "intro": "Une équipe formée, diplômée, et toujours sur le tapis avec vous.",
-    "credentials": "Parcours & diplômes"
+    "empty": "L'équipe sera bientôt présentée ici."
+  },
+  "events": {
+    "metaTitle": "Événements | {name}",
+    "metaDescription": "Stages, compétitions et passages de grade à {name}, {city}. Les prochains rendez-vous de l'académie.",
+    "title": "Événements",
+    "intro": "Stages, compétitions, passages de grade et séminaires : les prochains rendez-vous de l'académie.",
+    "empty": "Aucun événement à venir pour le moment. Revenez bientôt !"
   },
   "schedule": {
     "metaTitle": "Horaires des cours | {name}",

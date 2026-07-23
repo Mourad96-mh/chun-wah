@@ -70,8 +70,23 @@ export default function AdminShell({
           <Link href="/admin/parcours" className={isActive('/admin/parcours') ? 'active' : ''}>
             Parcours
           </Link>
+          <Link href="/admin/equipe" className={isActive('/admin/equipe') ? 'active' : ''}>
+            Équipe
+          </Link>
+          <Link href="/admin/evenements" className={isActive('/admin/evenements') ? 'active' : ''}>
+            Événements
+          </Link>
+          <Link href="/admin/histoire" className={isActive('/admin/histoire') ? 'active' : ''}>
+            Histoire
+          </Link>
           <Link href="/admin/medias" className={isActive('/admin/medias') ? 'active' : ''}>
             Images
+          </Link>
+          <Link
+            href="/admin/bannieres"
+            className={isActive('/admin/bannieres') ? 'active' : ''}
+          >
+            Bannières
           </Link>
           <Link href="/admin/reglages" className={isActive('/admin/reglages') ? 'active' : ''}>
             Réglages

@@ -5,12 +5,17 @@ import mongoose from 'mongoose';
 
 import authRoutes from './routes/auth.js';
 import articleRoutes from './routes/articles.js';
+import bannerRoutes from './routes/banners.js';
 import bookRoutes from './routes/books.js';
 import programRoutes from './routes/programs.js';
 import settingsRoutes from './routes/settings.js';
 import roadmapRoutes from './routes/roadmap.js';
+import roadmapPageRoutes from './routes/roadmapPage.js';
 import videoRoutes from './routes/videos.js';
 import mediaRoutes from './routes/media.js';
+import teamRoutes from './routes/team.js';
+import eventRoutes from './routes/events.js';
+import historyRoutes from './routes/history.js';
 import uploadRoutes from './routes/uploads.js';
 
 const app = express();
@@ -26,12 +31,17 @@ app.use(cors({ origin: origins.length ? origins : true }));
 app.get('/', (req, res) => res.json({ ok: true, service: 'chunwah-api' }));
 app.use('/api/auth', authRoutes);
 app.use('/api/articles', articleRoutes);
+app.use('/api/banners', bannerRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/programs', programRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/roadmap', roadmapRoutes);
+app.use('/api/roadmap-page', roadmapPageRoutes);
 app.use('/api/videos', videoRoutes);
 app.use('/api/media', mediaRoutes);
+app.use('/api/team', teamRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api/history', historyRoutes);
 app.use('/api/uploads', uploadRoutes);
 
 // 404

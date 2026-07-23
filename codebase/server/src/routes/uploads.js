@@ -7,7 +7,7 @@ const router = Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 8 * 1024 * 1024 } });
 
 // Dossiers Cloudinary autorisés ; toute autre valeur retombe sur "blog".
-const ALLOWED_FOLDERS = ['chunwah/blog', 'chunwah/livres', 'chunwah/cours', 'chunwah/medias'];
+const ALLOWED_FOLDERS = ['chunwah/blog', 'chunwah/livres', 'chunwah/cours', 'chunwah/medias', 'chunwah/banners', 'chunwah/roadmap', 'chunwah/team', 'chunwah/events', 'chunwah/history'];
 
 // POST /api/uploads — form-data avec un champ `file` et un champ optionnel
 // `folder` (protégé). Renvoie { url }.

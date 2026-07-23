@@ -1,16 +1,14 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import { site } from '@/data/site';
-import { roadmap, hasRoadmapContent } from '@/lib/roadmap';
+import { getRoadmapSteps } from '@/lib/roadmap';
+import { getRoadmapPage } from '@/lib/roadmapPage';
 import { buildMetadata, absoluteUrl } from '@/lib/seo';
 import { assertNavVisible } from '@/lib/settings';
 import { breadcrumbSchema } from '@/lib/schema';
-import PageHeader from '@/components/PageHeader';
 import JsonLd from '@/components/JsonLd';
-import RoadmapFigure from '@/components/RoadmapFigure';
-import styles from './parcours.module.css';
+import RoadmapPageContent from '@/components/RoadmapPageContent';
 
 export async function generateMetadata({
   params,
@@ -40,53 +38,28 @@ export default async function RoadmapPage({
   const t = await getTranslations('roadmap');
   const tn = await getTranslations('nav');
 
-  // Le schéma lui-même est rendu par RoadmapFigure (composant client, réaligné
-  // sur l'API). Ici on ne garde que de quoi décider si la frise décorative a du
-  // sens : le snapshot baké suffit.
-  const hasContent = hasRoadmapContent(roadmap);
-
-  // Decorative milestone nodes for the journey strip — content-neutral so they
-  // never contradict whatever the academy drew on its own map.
-  const milestones = [t('journeyStart'), '', '', t('journeyEnd')];
+  // Étapes + textes de la page (gérés dans /admin/parcours) — snapshots bakés,
+  // réalignés sur l'API côté client. Les textes vides retombent sur les valeurs
+  // traduites par défaut, résolues ici et passées au composant client.
+  const steps = getRoadmapSteps();
+  const copy = getRoadmapPage();
+  const fallbacks = {
+    title: t('title'),
+    intro: t('intro'),
+    kicker: t('stagesKicker'),
+    heading: t('stagesTitle'),
+    ctaTitle: t('ctaTitle'),
+    ctaButton: t('ctaButton'),
+  };
 
   return (
     <>
-      <PageHeader
-        title={t('title')}
-        intro={t('intro')}
-        crumbs={[{ label: tn('home'), href: '/' }, { label: tn('roadmap') }]}
+      <RoadmapPageContent
+        initialCopy={copy}
+        fallbacks={fallbacks}
+        crumbs={{ home: tn('home'), roadmap: tn('roadmap') }}
+        initialSteps={steps}
       />
-
-      <section className={`section ${styles.showcase}`}>
-        <div className="wrap">
-          <div className={styles.head}>
-            <span className="kicker">{t('stagesKicker')}</span>
-            <h2>{t('stagesTitle')}</h2>
-          </div>
-
-          {/* Journey strip — a dashed path with numbered milestone nodes. Pure
-              decoration; the real content is the uploaded map below it. */}
-          <ol className={styles.journey} aria-hidden={!hasContent}>
-            {milestones.map((label, i) => (
-              <li key={i} className={styles.milestone}>
-                <span className={styles.node}>{i + 1}</span>
-                {label && <span className={styles.nodeLabel}>{label}</span>}
-              </li>
-            ))}
-          </ol>
-
-          <RoadmapFigure initialRoadmap={roadmap} />
-        </div>
-      </section>
-
-      <section className={styles.cta}>
-        <div className={`wrap ${styles.ctaInner}`}>
-          <h2>{t('ctaTitle')}</h2>
-          <Link href="/cours-essai-gratuit" className={`btn ${styles.ctaButton}`}>
-            {t('ctaButton')}
-          </Link>
-        </div>
-      </section>
 
       <JsonLd
         data={breadcrumbSchema([

@@ -14,7 +14,8 @@ import styles from './Header.module.css';
 const navItems: { href: StaticPathname; key: NavKey; frOnly?: boolean }[] = [
   { href: '/cours', key: 'programs' },
   { href: '/parcours', key: 'roadmap' },
-  { href: '/instructeurs', key: 'instructors' },
+  { href: '/equipe', key: 'team' },
+  { href: '/evenements', key: 'events' },
   { href: '/horaires', key: 'schedule' },
   { href: '/blog', key: 'blog', frOnly: true },
   { href: '/livres', key: 'books', frOnly: true },

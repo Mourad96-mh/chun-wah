@@ -18,8 +18,8 @@
 
 .logo {
   display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.6rem;
   font-family: var(--font-display);
   font-size: 1.35rem;
   font-weight: 700;
@@ -28,8 +28,12 @@
   white-space: nowrap;
 }
 
+/* Le sceau est détouré (fond transparent) : il se pose tel quel sur la barre
+   sombre. flex-shrink: 0 pour qu'il ne s'écrase pas quand le nom est long. */
 .logoMark {
-  color: var(--accent);
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
 }
 
 .nav {
@@ -184,6 +188,10 @@
   .logo {
     font-size: 1.1rem;
     letter-spacing: 0.06em;
+  }
+  .logoMark {
+    width: 28px;
+    height: 28px;
   }
   .lang {
     padding: 0.4rem 0.55rem;

@@ -72,7 +72,7 @@ h2 {
 
 .a-brand {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 0.5rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -84,8 +84,10 @@ h2 {
   text-decoration: none;
 }
 
-.a-brand span {
-  color: var(--a-accent);
+.a-brand img {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
 }
 
 .a-topnav {
@@ -476,8 +478,10 @@ h2 {
   text-transform: uppercase;
 }
 
-.a-loginBrand span {
-  color: var(--a-accent);
+.a-loginBrand img {
+  width: 32px;
+  height: 32px;
+  vertical-align: -0.5em;
 }
 
 @media (min-width: 760px) {

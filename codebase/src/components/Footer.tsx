@@ -47,7 +47,15 @@ export default async function Footer() {
         <div className={styles.grid}>
           <div className={styles.brand}>
             <div className={styles.logo}>
-              <span className={styles.logoMark}>詠</span>
+              {/* alt="" : le nom de l'académie suit juste à côté (cf. Header). */}
+              <img
+                src="/logo.png"
+                alt=""
+                width={40}
+                height={40}
+                loading="lazy"
+                className={styles.logoMark}
+              />
               <span>{site.name}</span>
             </div>
             <p className={styles.tagline}>{t('tagline', { city: site.address.city })}</p>

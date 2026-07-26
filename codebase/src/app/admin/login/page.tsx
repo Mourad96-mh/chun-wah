@@ -12,7 +12,7 @@ export default function LoginPage() {
     <div className="a-loginWrap">
       <div className="a-login">
         <p className="a-loginBrand">
-          <span>詠</span> Chun Wah
+          <img src="/logo.png" alt="" width={32} height={32} /> Chun Wah
         </p>
         <div className="a-card">
           <h1 style={{ fontSize: '1.15rem' }}>Administration</h1>

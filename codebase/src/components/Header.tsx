@@ -59,7 +59,9 @@ export default function Header({ hiddenNav = [] }: { hiddenNav?: NavKey[] }) {
     <header className={styles.header}>
       <div className={`wrap ${styles.inner}`}>
         <Link href="/" className={styles.logo}>
-          <span className={styles.logoMark}>詠</span>
+          {/* alt="" : le nom de l'académie suit juste à côté, dans le même lien.
+              Un alt descriptif ferait annoncer la marque deux fois de suite. */}
+          <img src="/logo.png" alt="" width={36} height={36} className={styles.logoMark} />
           <span>{site.name}</span>
         </Link>
 

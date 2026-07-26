@@ -148,6 +148,11 @@ export const adminApi = {
   updateRoadmapPage: (b: unknown) =>
     request('/api/roadmap-page', { method: 'PUT', body: b, auth: true }),
 
+  // --- Accueil (textes libres de la page d'accueil) --------------------------
+  getHomePage: () => request('/api/home-page'),
+  updateHomePage: (b: unknown) =>
+    request('/api/home-page', { method: 'PUT', body: b, auth: true }),
+
   // --- Parcours de l'élève (étapes de la frise) ------------------------------
   listRoadmapSteps: () => request('/api/roadmap/admin/all', { auth: true }),
   createRoadmapStep: (b: unknown) =>

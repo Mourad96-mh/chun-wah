@@ -45,12 +45,15 @@ export default function AdminShell({
     <>
       <header className="a-topbar">
         <Link href="/admin" className="a-brand">
-          <span>詠</span> Chun Wah
+          <img src="/logo.png" alt="" width={28} height={28} /> Chun Wah
         </Link>
 
         <nav className="a-topnav">
           <Link href="/admin" className={isActive('/admin') ? 'active' : ''}>
             Tableau de bord
+          </Link>
+          <Link href="/admin/accueil" className={isActive('/admin/accueil') ? 'active' : ''}>
+            Accueil
           </Link>
           <Link href="/admin/cours" className={isActive('/admin/cours') ? 'active' : ''}>
             Cours

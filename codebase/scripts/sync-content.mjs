@@ -22,6 +22,7 @@ const videosFile = path.resolve(__dirname, '../src/lib/videos.data.json');
 const teamFile = path.resolve(__dirname, '../src/lib/team.data.json');
 const eventsFile = path.resolve(__dirname, '../src/lib/events.data.json');
 const historyFile = path.resolve(__dirname, '../src/lib/history.data.json');
+const homePageFile = path.resolve(__dirname, '../src/lib/homePage.data.json');
 
 // Charge .env.local (ce script tourne hors de Next, qui sinon lirait le fichier).
 function loadEnvLocal() {
@@ -85,6 +86,7 @@ async function main() {
   await syncCollection('/api/team', teamFile, 'équipe');
   await syncCollection('/api/events', eventsFile, 'événements');
   await syncCollection('/api/history', historyFile, 'jalons histoire');
+  await syncObject('/api/home-page', homePageFile, "textes de l'accueil");
 }
 
 main();

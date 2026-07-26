@@ -61,6 +61,9 @@ export default function AdminDashboard() {
           <Link href="/admin/parcours" className="a-btn">
             Parcours
           </Link>
+          <Link href="/admin/accueil" className="a-btn">
+            Textes de l’accueil
+          </Link>
           <Link href="/admin/medias" className="a-btn">
             Images du site
           </Link>

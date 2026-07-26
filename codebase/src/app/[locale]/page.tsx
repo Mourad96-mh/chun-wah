@@ -10,9 +10,10 @@ import { buildMetadata } from '@/lib/seo';
 import { getPublicSettings } from '@/lib/settings';
 import { getMediaMap } from '@/lib/media';
 import { getBanners } from '@/lib/banners';
+import { getHomePage } from '@/lib/homePage';
 import { faqSchema } from '@/lib/schema';
 import Hero from '@/components/Hero';
-import LivePhoto from '@/components/LivePhoto';
+import AboutSection from '@/components/AboutSection';
 import ProgramsList from '@/components/ProgramsList';
 import ScheduleTable from '@/components/ScheduleTable';
 import Testimonials from '@/components/Testimonials';
@@ -67,6 +68,8 @@ export default async function HomePage({
   const media = await getMediaMap();
   // Diapositives du hero (gérées dans /admin/bannieres) ; vide → hero image unique.
   const banners = getBanners();
+  // Textes libres de l'accueil (/admin/accueil) ; champs vides → traductions.
+  const homeCopy = getHomePage();
   // Instructors with any admin name overrides (used by the schedule preview).
   const instructors = await getInstructors();
   // Courses from the DB (admin-managed).
@@ -116,36 +119,22 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* --- About --- */}
-      <section className="section">
-        <div className="wrap">
-          <div className={styles.about}>
-            <div className={styles.aboutMedia}>
-              <LivePhoto
-                slot="academy"
-                initialMedia={media}
-                src="/images/academy.jpg"
-                fallbackAlt={
-                  locale === 'fr'
-                    ? "L'intérieur de l'académie Chun Wah"
-                    : 'Inside the Chun Wah academy'
-                }
-                sizes="(max-width: 860px) 100vw, 50vw"
-              />
-            </div>
-            <div className={styles.aboutBody}>
-              <span className="kicker">{t('aboutKicker')}</span>
-              <h2>{t('aboutTitle')}</h2>
-              <p>{t('aboutBody')}</p>
-              {!teamHidden && (
-                <Link href="/equipe" className="btn btn-outline">
-                  {tc('learnMore')}
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* --- About (textes personnalisables depuis /admin/accueil) --- */}
+      <AboutSection
+        initialCopy={homeCopy}
+        initialMedia={media}
+        showTeamLink={!teamHidden}
+        fallbacks={{
+          kicker: t('aboutKicker'),
+          title: t('aboutTitle'),
+          body: t('aboutBody'),
+          learnMore: tc('learnMore'),
+          photoAlt:
+            locale === 'fr'
+              ? "L'intérieur de l'académie Chun Wah"
+              : 'Inside the Chun Wah academy',
+        }}
+      />
 
       {/* --- Our history timeline (renders only if milestones exist) --- */}
       <HistoryTimeline locale={locale} />

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Locale } from '@/i18n/routing';
 import { site } from '@/data/site';
-import { programsByOrder } from '@/data/programs';
+import { getPrograms } from '@/lib/programs';
 import { buildMetadata } from '@/lib/seo';
 import PageHeader from '@/components/PageHeader';
 import TrialForm from '@/components/TrialForm';
@@ -37,6 +37,11 @@ export default async function TrialPage({
   const tc = await getTranslations('common');
 
   const steps = [t('step1'), t('step2'), t('step3')];
+
+  // Disciplines proposées dans le formulaire : les cours gérés en admin, comme
+  // partout ailleurs sur le site (cette page n'est pas masquable, mais sa liste
+  // doit quand même suivre /admin/cours).
+  const programsByOrder = await getPrograms();
 
   return (
     <>

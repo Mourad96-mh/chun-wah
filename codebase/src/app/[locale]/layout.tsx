@@ -66,7 +66,7 @@ export async function generateMetadata({
     icons: {
       icon: [
         { url: '/favicon.ico', sizes: 'any' },
-        { url: '/favicon.svg', type: 'image/svg+xml' },
+        { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
       ],
       apple: '/apple-touch-icon.png',
     },
@@ -118,7 +118,7 @@ export default async function LocaleLayout({
           <Footer />
           <FloatingWhatsApp />
         </NextIntlClientProvider>
-        <JsonLd data={localBusinessSchema(locale as Locale)} />
+        <JsonLd data={await localBusinessSchema(locale as Locale)} />
       </body>
     </html>
   );

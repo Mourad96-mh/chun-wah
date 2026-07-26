@@ -1,6 +1,7 @@
 import type { Locale } from '@/i18n/routing';
 import { site } from '@/data/site';
-import { programs } from '@/data/programs';
+import { getPrograms } from '@/lib/programs';
+import { getPublicSettings } from '@/lib/settings';
 import { faq } from '@/data/faq';
 import type { Program } from '@/data/types';
 import { absoluteUrl } from './seo';
@@ -16,7 +17,17 @@ import { pick } from './localized';
 
 const businessId = `${site.url}/#academy`;
 
-export function localBusinessSchema(locale: Locale) {
+/**
+ * Émis sur CHAQUE page (layout racine), donc la source des cours doit être la
+ * même que celle du site : le snapshot admin (src/lib/programs.ts), pas la liste
+ * statique d'origine. `makesOffer` est en plus omis quand le client a masqué la
+ * section Cours — ses URLs /cours/[slug] rendent alors un 404, et une offre qui
+ * pointe vers un 404 est un mauvais signal pour Google.
+ */
+export async function localBusinessSchema(locale: Locale) {
+  const [programs, { hiddenNav }] = await Promise.all([getPrograms(), getPublicSettings()]);
+  const offers = hiddenNav.includes('programs') ? [] : programs;
+
   return {
     '@context': 'https://schema.org',
     '@type': 'SportsActivityLocation',
@@ -56,15 +67,18 @@ export function localBusinessSchema(locale: Locale) {
         closes: '18:00',
       },
     ],
-    makesOffer: programs.map((p) => ({
-      '@type': 'Offer',
-      itemOffered: {
-        '@type': 'Service',
-        name: pick(p.name, locale),
-        description: pick(p.tagline, locale),
-        url: absoluteUrl({ pathname: '/cours/[slug]', params: { slug: p.slug } }, locale),
-      },
-    })),
+    // Clé absente plutôt que tableau vide : un `makesOffer: []` n'apporte rien.
+    ...(offers.length > 0 && {
+      makesOffer: offers.map((p) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: pick(p.name, locale),
+          description: pick(p.tagline, locale),
+          url: absoluteUrl({ pathname: '/cours/[slug]', params: { slug: p.slug } }, locale),
+        },
+      })),
+    }),
   };
 }
 

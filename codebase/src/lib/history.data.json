@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "_id": "6a6656ee50cd01f89d7ed82c",
+    "year": "2020",
+    "titleFr": "ouverture",
+    "titleEn": "open",
+    "descriptionFr": "bla bla bla",
+    "descriptionEn": "bla bla bla",
+    "image": "",
+    "order": 0,
+    "active": true,
+    "createdAt": "2026-07-26T18:50:22.928Z",
+    "updatedAt": "2026-07-26T18:50:22.928Z",
+    "__v": 0
+  }
+]

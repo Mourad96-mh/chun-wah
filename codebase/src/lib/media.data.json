@@ -2,21 +2,21 @@
   "items": [
     {
       "slot": "hero",
-      "url": "",
+      "url": "https://res.cloudinary.com/ddmfn5mwi/image/upload/v1785019290/chunwah/medias/xvokbeq4c11csnbab4ei.jpg",
       "alt": "",
       "name": ""
     },
     {
       "slot": "academy",
-      "url": "",
-      "alt": "",
+      "url": "https://res.cloudinary.com/ddmfn5mwi/image/upload/v1785019390/chunwah/medias/zstrubeyttuardwycaum.jpg",
+      "alt": "A Historic Martial Arts Alliance  In December 2015, Grand Master Teddy Lai took his first step into Africa on his global mission to spread traditional Chinese martial arts. Recognizing exceptional mastery and dedication, Sifu Lai accepted Master Bouchaib Soubai—a distinguished expert in both Japanes",
       "name": ""
     },
     {
       "slot": "instructor:sifu-placeholder",
       "url": "",
       "alt": "",
-      "name": ""
+      "name": "Grand master Teddy lai"
     },
     {
       "slot": "instructor:instructeur-2",

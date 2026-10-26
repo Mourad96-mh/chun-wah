@@ -48,7 +48,7 @@ export default function AboutSection({
     (copy[field][locale] || '').trim() || fallback;
 
   return (
-    <section className="section">
+    <section id="academie" className="section">
       <div className="wrap">
         <div className={styles.about}>
           <div className={styles.aboutMedia}>
@@ -63,7 +63,12 @@ export default function AboutSection({
           <div className={styles.aboutBody}>
             <span className="kicker">{pick('aboutKicker', fallbacks.kicker)}</span>
             <h2>{pick('aboutTitle', fallbacks.title)}</h2>
-            <p>{pick('aboutBody', fallbacks.body)}</p>
+            {/* Une ligne vide sépare deux paragraphes (texte par défaut comme admin). */}
+            {pick('aboutBody', fallbacks.body)
+              .split(/\n\s*\n/)
+              .map((para, i) => (
+                <p key={i}>{para.trim()}</p>
+              ))}
             {showTeamLink && (
               <Link href="/equipe" className="btn btn-outline">
                 {fallbacks.learnMore}

@@ -33,17 +33,17 @@ const FIELDS: Field[] = [
   {
     base: 'aboutTitle',
     label: 'Titre de la section',
-    phFr: 'Une salle, pas une vitrine',
-    phEn: 'A gym, not a showroom',
+    phFr: "Une école. Plusieurs arts. Une même voie.",
+    phEn: "One school. Many arts. One path.",
   },
   {
     base: 'aboutBody',
-    label: 'Paragraphe de présentation',
+    label: 'Texte de présentation (une ligne vide = nouveau paragraphe)',
     textarea: true,
     phFr:
-      "Chun Wah est une académie de quartier fondée sur une idée simple : un art martial ne vaut que s'il fonctionne sous pression. On y travaille les principes avant les figures, on y progresse à son rythme, et on y est accueilli qu'on ait 8 ou 58 ans. Débutants bienvenus toute l'année.",
+      "Chun Wah est une académie dédiée à l’étude et à la transmission des arts martiaux chinois.\n\nÀ travers différentes disciplines, différentes traditions et différentes approches du combat, nous cherchons une même chose : comprendre l’art, maîtriser le corps et développer l’esprit.\n\nIci, chaque pratique a sa propre identité, ses principes et son histoire. Mais toutes reposent sur les mêmes valeurs : discipline, respect, persévérance et maîtrise de soi.\n\nQue l’on débute ou que l’on pratique depuis des années, l’objectif reste le même : apprendre, pratiquer, progresser et transmettre.\n\nUn art martial ne se contente pas de s’apprendre. Il se vit.",
     phEn:
-      'Chun Wah is a neighbourhood academy built on one idea: a martial art is only worth something if it works under pressure. We teach principles before flourishes, everyone progresses at their own pace, and you are welcome whether you are 8 or 58. Beginners welcome all year round.',
+      "Chun Wah is an academy devoted to the study and transmission of the Chinese martial arts.\n\nThrough different disciplines, different traditions and different approaches to combat, we pursue one thing: understanding the art, mastering the body and developing the mind.\n\nHere, every practice has its own identity, principles and history. Yet all of them rest on the same values: discipline, respect, perseverance and self-control.\n\nWhether you are just starting out or have trained for years, the goal stays the same: learn, practise, progress and pass it on.\n\nA martial art is not simply learned. It is lived.",
   },
 ];
 

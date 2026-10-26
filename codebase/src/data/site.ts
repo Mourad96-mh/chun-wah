@@ -14,9 +14,9 @@ export const site = {
   url: 'https://cwtcma-morocco.com',
 
   // TODO: real contact details.
-  phone: '+212 7 11 48 73 69',
-  phoneHref: '+212711487369',
-  whatsapp: '212711487369',
+  phone: '+212 7 81 36 54 26',
+  phoneHref: '+212781365426',
+  whatsapp: '212781365426',
   email: 'contact@chunwah.ma',
 
   address: {

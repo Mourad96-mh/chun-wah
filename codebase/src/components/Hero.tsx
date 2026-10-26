@@ -22,7 +22,7 @@ const AUTOPLAY_MS = 6000;
  * Sans diapositive : retombe sur l'ancien hero — image unique pilotée depuis
  * /admin/medias (slot « hero ») + textes traduits du site.
  *
- * Dans les deux cas, l'accroche (kicker) et les boutons Essai gratuit / Horaires
+ * Dans les deux cas, l'accroche (kicker) et les boutons Académie / Horaires
  * restent fixes et traduits — ils ne dépendent pas de la diapositive.
  *
  * Le composant est rendu côté serveur avec `initialBanners` (snapshot baké) :
@@ -124,9 +124,10 @@ export default function Hero({
           <h1 className={styles.heroTitle}>{title}</h1>
           <p className={styles.heroSubtitle}>{subtitle}</p>
           <div className={styles.heroActions}>
-            <Link href="/cours-essai-gratuit" className="btn btn-primary">
+            {/* Descend vers la section « L'académie » de l'accueil (AboutSection). */}
+            <a href="#academie" className="btn btn-primary">
               {primaryCtaLabel}
-            </Link>
+            </a>
             {secondaryCtaLabel && (
               <Link href="/horaires" className="btn btn-outline">
                 {secondaryCtaLabel}

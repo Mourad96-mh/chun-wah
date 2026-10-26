@@ -1,35 +1,13 @@
 [
   {
-    "id": "6a5fbecb91736dc9c34411bd",
-    "title": "[DÉMO] Démonstration technique",
-    "description": "Vidéo de démonstration — à remplacer par vos propres images.",
-    "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
-    "poster": "https://picsum.photos/seed/chunwah1/800/450",
-    "order": 10,
+    "id": "6a78b6821ab15053fe2765f1",
+    "title": "2024 — The First Chun Wah Morocco Visit to Hong Kong",
+    "description": "In 2024, Chun Wah Chinese Martial Arts Morocco made its first official visit to Hong Kong, traveling to meet Grand Master Teddy Lai, his masters, and his family.\n\nThis historic journey was much more than a visit. It was an opportunity to strengthen our lineage, exchange Kung Fu knowledge, discover our martial arts heritage, and build lasting relationships with the Chun Wah family in Hong Kong.",
+    "videoUrl": "https://res.cloudinary.com/ddmfn5mwi/video/upload/v1786295715/chunwah/videos/rjuq9mipetv7br7qpat5.mp4",
+    "poster": "",
+    "order": 1,
     "status": "published",
-    "createdAt": "2026-07-21T18:47:39.630Z",
-    "updatedAt": "2026-07-21T18:47:39.630Z"
-  },
-  {
-    "id": "6a5fbecb91736dc9c34411be",
-    "title": "[DÉMO] Ambiance de cours",
-    "description": "Vidéo de démonstration — à remplacer par vos propres images.",
-    "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-    "poster": "https://picsum.photos/seed/chunwah2/800/450",
-    "order": 20,
-    "status": "published",
-    "createdAt": "2026-07-21T18:47:39.632Z",
-    "updatedAt": "2026-07-21T18:47:39.632Z"
-  },
-  {
-    "id": "6a5fbecb91736dc9c34411bf",
-    "title": "[DÉMO] Stage & événements",
-    "description": "Vidéo de démonstration — à remplacer par vos propres images.",
-    "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-    "poster": "https://picsum.photos/seed/chunwah3/800/450",
-    "order": 30,
-    "status": "published",
-    "createdAt": "2026-07-21T18:47:39.632Z",
-    "updatedAt": "2026-07-21T18:47:39.632Z"
+    "createdAt": "2026-08-09T17:18:58.051Z",
+    "updatedAt": "2026-08-09T17:19:24.821Z"
   }
 ]

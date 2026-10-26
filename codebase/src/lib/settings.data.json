@@ -1,3 +1,7 @@
 {
-  "hiddenNav": []
+  "hiddenNav": [
+    "books",
+    "roadmap",
+    "contact"
+  ]
 }

@@ -12,9 +12,10 @@ services:
     name: chunwah-api
     runtime: node
     rootDir: codebase/server
-    # $7/mo, toujours éveillé (pas de cold start sur le login/admin). Passer à
-    # `free` pour tester gratuitement, mais free s'endort après 15 min → ~50s de réveil.
-    plan: starter
+    # Gratuit : s'endort après 15 min sans requête → ~50s de réveil (surtout
+    # sensible au login admin). Le site public lit les snapshots bakés, donc il
+    # n'en dépend pas. Repasser à `starter` ($7/mo) pour un service toujours éveillé.
+    plan: free
     region: frankfurt # le plus proche du Maroc ; options : oregon, ohio, virginia, singapore
     branch: main
     buildCommand: npm ci
